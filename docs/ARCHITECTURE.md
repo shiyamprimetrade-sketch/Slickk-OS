@@ -24,3 +24,14 @@ Android source and licensing are references, not pretraining data that may be fa
 Full AOSP builds need substantially more resources than a typical phone; Google recommends a 64-bit Linux build host, 64 GB RAM and 400 GB free disk. GitHub Actions standard runners are not a substitute for a complete unoptimized AOSP build.
 ## Dependencies
 Launcher APK can progress before OS image. Framework/HAL/kernel changes depend on AOSP tag and build host. Phone port depends on compatibility and explicit user consent.
+
+
+## P0-002: Pinned upstream development baseline (candidate for merge)
+The independent architecture task selects AOSP **Android 17 / API 37** at immutable release tag **`android-17.0.0_r1`** for the first *source-development baseline*. The official manifest annotated-tag object is `7a9e46ba6ed424f922a3457f4964e67e0b966201`, its peeled commit is `5bc9a7ce1cd78dd53613bbfd0ebf506e1e4adb0f`. This is not an all-project commit: the manifest pins each separate Android project tag.
+
+- Source decision and reproducibility commands: [`architecture/baseline/DECISION.md`](../architecture/baseline/DECISION.md).
+- Machine-readable exact object IDs: [`architecture/baseline/pins.json`](../architecture/baseline/pins.json).
+- Python verifier and negative-case tests: [`architecture/baseline/verify.py`](../architecture/baseline/verify.py) and [`architecture/baseline/test_verify.py`](../architecture/baseline/test_verify.py).
+- Contracts: [`architecture/contracts/PLATFORM.md`](../architecture/contracts/PLATFORM.md).
+
+**Security warning:** Android 17 r1 tags a June 2026 security baseline. It does not include a verified October 2026 security patch level. Before a public/production release, integrate and test subsequent applicable security fixes. Cuttlefish source-target presence, full image build/boot, CTS/VTS, physical hardware and app compatibility are distinct later acceptance gates; none are implied by this baseline pin.
