@@ -1,7 +1,7 @@
 {
   "project": "Slickk-OS",
   "version": 1,
-  "notes": "All TODO; completion is evidence-gated, not conversation-gated",
+  "notes": "Completion is evidence-gated, not conversation-gated. P0-001 Step 1 inspected; later steps and all other tasks remain incomplete.",
   "tasks": [
     {
       "id": "P0-001",
@@ -10,8 +10,8 @@
       "title": "Approve product charter",
       "depends_on": [],
       "acceptance": "Reviewed mission, intended users, tracked success criteria",
-      "state": "TODO",
-      "step": 1,
+      "state": "IN_PROGRESS",
+      "step": 2,
       "steps": [
         "Verify repository inputs and preconditions",
         "Define implementation/inspection plan and exact contracts",
@@ -19,7 +19,19 @@
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
         "Obtain review and close acceptance gates"
-      ]
+      ],
+      "completed_steps": [
+        1
+      ],
+      "branch": "task/P0-001-product-charter",
+      "base_commit": "69ae8b43738919923c76178a79015c657adcb503",
+      "owned_paths": [
+        "tasks/pilot.json",
+        "docs/STATUS.md",
+        "docs/checkpoints/P0-001.md",
+        "docs/PROJECT_CHARTER.md"
+      ],
+      "checkpoint": "docs/checkpoints/P0-001.md"
     },
     {
       "id": "P0-002",
