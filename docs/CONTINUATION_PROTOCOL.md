@@ -5,10 +5,10 @@
 3. Confirm dependencies and owned paths. If absent, enter BLOCKED, do not invent state.
 4. Enumerate a finite plan 1..N with acceptance check for each step and persistent state.
 ## Commands
-- "Continue": execute the next unfinished, dependency-ready step of the active task, not a new project or arbitrary improvement. Re-read fresh repository status first.
+- "Continue": execute the next unfinished, dependency-ready step of the active task; re-read fresh repository status first. If and only if the current phase exit gates have been documented as PASSED and explicitly presented to the owner, the owner replying Continue authorizes transition to the next phase (not a merge, flash, unlock, wipe or release).
 - "Status": read actual registry, PR/checkpoint/test evidence; do not claim progress based on conversational recollection.
 - "Review TASK-ID": independently inspect patch, CI and invariants; report evidence and defects.
-- "Approve phase N": only owner can authorize next phase after documented exit gate.
+- "Approve phase N": alternative explicit owner authorization after a documented PASSED gate. Continue at that same documented gate also counts as approval for phase planning only.
 - "Pause": checkpoint without pretending ongoing work.
 ## Output limits
 At most 1,500 net new/modified source lines and 8 paths per response; at most one task increment per Continue. If over limit, split into increments and update plan. Reasonable text verbosity, no padded code.

@@ -2,7 +2,7 @@
 **Project:** Slickk-OS
 **GitHub:** https://github.com/shiyamprimetrade-sketch/Slickk-OS
 **Phase:** 0 (planning, verification infrastructure)
-**Status basis:** GitHub repo creation verified. Initial README committed. Full planning package is proposed via branch/PR and not yet merged.
+**Status basis:** GitHub repo creation verified. Initial README committed. Full planning package submitted as draft PR #1 (planning/slickk-os-foundation), not merged. Registry CI passed on original PR commit; rerun after subsequent amendments.
 **Source base:** To be selected and pinned after task P0-002.
 **Custom Android OS image:** NOT BUILT.
 **Slickk Launcher APK:** NOT BUILT.

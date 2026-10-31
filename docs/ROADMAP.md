@@ -39,4 +39,4 @@ Exit: documented release evidence, no unresolved critical security defect.
 ## Phase 6 — Public release
 Publish supported device matrix, images, source, reproducible build steps, licensing, security updates and warranty/limitations. Never advertise untested device support.
 ## Continue semantics
-One Continue advances the current assigned task by one verified increment. At a phase gate, wait for explicit owner approval to advance.
+One Continue advances the current assigned task by one verified increment. At a phase gate with documented PASSED acceptance evidence, a subsequent owner Continue authorizes advancing to the next phase. It never authorizes a merge, release, device unlock, flash, or wipe.
