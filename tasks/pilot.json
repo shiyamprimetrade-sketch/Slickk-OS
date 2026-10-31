@@ -1,7 +1,7 @@
 {
   "project": "Slickk-OS",
   "version": 1,
-  "notes": "Completion is evidence-gated, not conversation-gated. P0-001 Step 1 inspected; later steps and all other tasks remain incomplete.",
+  "notes": "P0-001 Steps 1–2 completed; next step=3. Other pilot tasks remain TODO. Reserved paths/planned branches are allocation metadata, not dispatch or completion.",
   "tasks": [
     {
       "id": "P0-001",
@@ -11,7 +11,7 @@
       "depends_on": [],
       "acceptance": "Reviewed mission, intended users, tracked success criteria",
       "state": "IN_PROGRESS",
-      "step": 2,
+      "step": 3,
       "steps": [
         "Verify repository inputs and preconditions",
         "Define implementation/inspection plan and exact contracts",
@@ -21,17 +21,29 @@
         "Obtain review and close acceptance gates"
       ],
       "completed_steps": [
-        1
+        1,
+        2
       ],
       "branch": "task/P0-001-product-charter",
       "base_commit": "69ae8b43738919923c76178a79015c657adcb503",
       "owned_paths": [
         "tasks/pilot.json",
         "docs/STATUS.md",
-        "docs/checkpoints/P0-001.md",
-        "docs/PROJECT_CHARTER.md"
+        "docs/PROJECT_CHARTER.md",
+        "docs/contracts/P0-001-product-contract.md",
+        "docs/checkpoints/P0-001-step2-checks.json",
+        "docs/checkpoints/P0-001.md"
       ],
-      "checkpoint": "docs/checkpoints/P0-001.md"
+      "checkpoint": "docs/checkpoints/P0-001.md",
+      "technology_stack": [
+        "Markdown",
+        "JSON",
+        "Git/GitHub",
+        "Python 3 registry validation",
+        "GitHub Actions"
+      ],
+      "dispatch_status": "ACTIVE",
+      "contract": "docs/contracts/P0-001-product-contract.md"
     },
     {
       "id": "P0-002",
@@ -51,7 +63,22 @@
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
         "Obtain review and close acceptance gates"
-      ]
+      ],
+      "owned_paths": [
+        "docs/baselines/P0-002-aosp-baseline.md",
+        "docs/ARCHITECTURE.md",
+        "docs/RESEARCH_REFERENCES.md",
+        "docs/checkpoints/P0-002.md"
+      ],
+      "technology_stack": [
+        "AOSP source metadata",
+        "Git/Repo",
+        "Markdown",
+        "JSON"
+      ],
+      "checkpoint": "docs/checkpoints/P0-002.md",
+      "dispatch_status": "RESERVED",
+      "planned_branch": "task/P0-002-aosp-baseline"
     },
     {
       "id": "P0-003",
@@ -71,7 +98,20 @@
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
         "Obtain review and close acceptance gates"
-      ]
+      ],
+      "owned_paths": [
+        "docs/devices/P0-003-sm-a165f-feasibility.md",
+        "docs/DEVICE_POLICY.md",
+        "docs/checkpoints/P0-003.md"
+      ],
+      "technology_stack": [
+        "Official device documentation",
+        "Read-only Android observations",
+        "Markdown"
+      ],
+      "checkpoint": "docs/checkpoints/P0-003.md",
+      "dispatch_status": "RESERVED",
+      "planned_branch": "task/P0-003-device-feasibility"
     },
     {
       "id": "P0-004",
@@ -91,7 +131,21 @@
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
         "Obtain review and close acceptance gates"
-      ]
+      ],
+      "owned_paths": [
+        "docs/governance/P0-004-integration.md",
+        "docs/CONTINUATION_PROTOCOL.md",
+        "CONTRIBUTING.md",
+        "docs/checkpoints/P0-004.md"
+      ],
+      "technology_stack": [
+        "Git",
+        "GitHub branches/PRs/rules",
+        "Markdown"
+      ],
+      "checkpoint": "docs/checkpoints/P0-004.md",
+      "dispatch_status": "RESERVED",
+      "planned_branch": "task/P0-004-branch-governance"
     },
     {
       "id": "P0-005",
@@ -111,7 +165,21 @@
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
         "Obtain review and close acceptance gates"
-      ]
+      ],
+      "owned_paths": [
+        "scripts/validate_registry.py",
+        ".github/workflows/validate-planning.yml",
+        "docs/validation/P0-005-registry-ci.md",
+        "docs/checkpoints/P0-005.md"
+      ],
+      "technology_stack": [
+        "Python 3",
+        "JSON",
+        "GitHub Actions"
+      ],
+      "checkpoint": "docs/checkpoints/P0-005.md",
+      "dispatch_status": "RESERVED",
+      "planned_branch": "task/P0-005-registry-ci"
     },
     {
       "id": "P0-006",
@@ -131,7 +199,19 @@
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
         "Obtain review and close acceptance gates"
-      ]
+      ],
+      "owned_paths": [
+        "docs/security/P0-006-threat-model.md",
+        "docs/checkpoints/P0-006.md"
+      ],
+      "technology_stack": [
+        "Threat modeling",
+        "SELinux/AVB design references",
+        "Markdown"
+      ],
+      "checkpoint": "docs/checkpoints/P0-006.md",
+      "dispatch_status": "RESERVED",
+      "planned_branch": "task/P0-006-threat-model"
     },
     {
       "id": "P0-007",
@@ -151,7 +231,21 @@
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
         "Obtain review and close acceptance gates"
-      ]
+      ],
+      "owned_paths": [
+        "docs/benchmarks/P0-007-protocol.md",
+        "docs/BENCHMARKS.md",
+        "docs/checkpoints/P0-007.md"
+      ],
+      "technology_stack": [
+        "Perfetto",
+        "Android Macrobenchmark",
+        "Python 3",
+        "JSON"
+      ],
+      "checkpoint": "docs/checkpoints/P0-007.md",
+      "dispatch_status": "RESERVED",
+      "planned_branch": "task/P0-007-measurement-protocol"
     },
     {
       "id": "P0-008",
@@ -172,7 +266,20 @@
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
         "Obtain review and close acceptance gates"
-      ]
+      ],
+      "owned_paths": [
+        "docs/benchmarks/P0-008-phone-baseline.md",
+        "evidence/P0-008/**",
+        "docs/checkpoints/P0-008.md"
+      ],
+      "technology_stack": [
+        "Read-only Android observations",
+        "Perfetto/batterystats where permitted",
+        "JSON"
+      ],
+      "checkpoint": "docs/checkpoints/P0-008.md",
+      "dispatch_status": "RESERVED",
+      "planned_branch": "task/P0-008-phone-baseline"
     },
     {
       "id": "P0-009",
@@ -192,7 +299,19 @@
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
         "Obtain review and close acceptance gates"
-      ]
+      ],
+      "owned_paths": [
+        "docs/ux/P0-009-user-journeys.md",
+        "docs/checkpoints/P0-009.md"
+      ],
+      "technology_stack": [
+        "Journey analysis",
+        "Screen-reader/large-text checks",
+        "Markdown"
+      ],
+      "checkpoint": "docs/checkpoints/P0-009.md",
+      "dispatch_status": "RESERVED",
+      "planned_branch": "task/P0-009-user-journeys"
     },
     {
       "id": "P0-010",
@@ -213,7 +332,21 @@
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
         "Obtain review and close acceptance gates"
-      ]
+      ],
+      "owned_paths": [
+        "docs/research/P0-010-optimization-shortlist.md",
+        "evidence/P0-010/**",
+        "docs/checkpoints/P0-010.md"
+      ],
+      "technology_stack": [
+        "Pinned AOSP source",
+        "Trace/callgraph analysis",
+        "Markdown",
+        "JSON"
+      ],
+      "checkpoint": "docs/checkpoints/P0-010.md",
+      "dispatch_status": "RESERVED",
+      "planned_branch": "task/P0-010-optimization-audit"
     },
     {
       "id": "P0-011",
@@ -233,7 +366,19 @@
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
         "Obtain review and close acceptance gates"
-      ]
+      ],
+      "owned_paths": [
+        "docs/ux/P0-011-launcher-spec.md",
+        "docs/checkpoints/P0-011.md"
+      ],
+      "technology_stack": [
+        "Kotlin/Compose design",
+        "Android accessibility",
+        "Markdown"
+      ],
+      "checkpoint": "docs/checkpoints/P0-011.md",
+      "dispatch_status": "RESERVED",
+      "planned_branch": "task/P0-011-launcher-spec"
     },
     {
       "id": "P0-012",
@@ -254,7 +399,21 @@
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
         "Obtain review and close acceptance gates"
-      ]
+      ],
+      "owned_paths": [
+        "experience/launcher/**",
+        "docs/build/P0-012-launcher-build.md",
+        "docs/checkpoints/P0-012.md"
+      ],
+      "technology_stack": [
+        "Kotlin",
+        "Android SDK",
+        "Gradle",
+        "Jetpack Compose if selected"
+      ],
+      "checkpoint": "docs/checkpoints/P0-012.md",
+      "dispatch_status": "RESERVED",
+      "planned_branch": "task/P0-012-launcher-skeleton"
     },
     {
       "id": "P0-013",
@@ -275,7 +434,19 @@
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
         "Obtain review and close acceptance gates"
-      ]
+      ],
+      "owned_paths": [
+        "docs/contracts/P0-013-framework-compatibility.md",
+        "docs/checkpoints/P0-013.md"
+      ],
+      "technology_stack": [
+        "Java/Kotlin",
+        "AIDL/Binder",
+        "API/ABI review"
+      ],
+      "checkpoint": "docs/checkpoints/P0-013.md",
+      "dispatch_status": "RESERVED",
+      "planned_branch": "task/P0-013-framework-contracts"
     },
     {
       "id": "P0-014",
@@ -295,7 +466,19 @@
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
         "Obtain review and close acceptance gates"
-      ]
+      ],
+      "owned_paths": [
+        "docs/security/P0-014-privacy-policy.md",
+        "docs/checkpoints/P0-014.md"
+      ],
+      "technology_stack": [
+        "Permission/data-flow analysis",
+        "Markdown",
+        "JSON"
+      ],
+      "checkpoint": "docs/checkpoints/P0-014.md",
+      "dispatch_status": "RESERVED",
+      "planned_branch": "task/P0-014-privacy-policy"
     },
     {
       "id": "P0-015",
@@ -315,7 +498,19 @@
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
         "Obtain review and close acceptance gates"
-      ]
+      ],
+      "owned_paths": [
+        "docs/research/P0-015-native-profiling.md",
+        "docs/checkpoints/P0-015.md"
+      ],
+      "technology_stack": [
+        "ART",
+        "Perfetto",
+        "C++/JNI/NDK profiling design"
+      ],
+      "checkpoint": "docs/checkpoints/P0-015.md",
+      "dispatch_status": "RESERVED",
+      "planned_branch": "task/P0-015-native-profiling"
     },
     {
       "id": "P0-016",
@@ -336,7 +531,20 @@
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
         "Obtain review and close acceptance gates"
-      ]
+      ],
+      "owned_paths": [
+        "docs/kernel/P0-016-memory-power-scope.md",
+        "docs/checkpoints/P0-016.md"
+      ],
+      "technology_stack": [
+        "Linux C",
+        "Kconfig",
+        "GKI",
+        "Trace analysis"
+      ],
+      "checkpoint": "docs/checkpoints/P0-016.md",
+      "dispatch_status": "RESERVED",
+      "planned_branch": "task/P0-016-kernel-scope"
     },
     {
       "id": "P0-017",
@@ -356,7 +564,19 @@
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
         "Obtain review and close acceptance gates"
-      ]
+      ],
+      "owned_paths": [
+        "docs/benchmarks/P0-017-media-network.md",
+        "docs/checkpoints/P0-017.md"
+      ],
+      "technology_stack": [
+        "Perfetto",
+        "Android media/network test design",
+        "Python 3"
+      ],
+      "checkpoint": "docs/checkpoints/P0-017.md",
+      "dispatch_status": "RESERVED",
+      "planned_branch": "task/P0-017-media-network-benchmarks"
     },
     {
       "id": "P0-018",
@@ -376,7 +596,19 @@
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
         "Obtain review and close acceptance gates"
-      ]
+      ],
+      "owned_paths": [
+        "docs/build/P0-018-cuttlefish-feasibility.md",
+        "docs/checkpoints/P0-018.md"
+      ],
+      "technology_stack": [
+        "Linux resource inspection",
+        "Repo/Soong/Ninja",
+        "Cuttlefish setup design"
+      ],
+      "checkpoint": "docs/checkpoints/P0-018.md",
+      "dispatch_status": "RESERVED",
+      "planned_branch": "task/P0-018-builder-feasibility"
     },
     {
       "id": "P0-019",
@@ -397,7 +629,20 @@
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
         "Obtain review and close acceptance gates"
-      ]
+      ],
+      "owned_paths": [
+        "docs/devices/P0-019-vendor-matrix.md",
+        "docs/checkpoints/P0-019.md"
+      ],
+      "technology_stack": [
+        "Stable AIDL",
+        "VINTF",
+        "Kernel KMI",
+        "Markdown"
+      ],
+      "checkpoint": "docs/checkpoints/P0-019.md",
+      "dispatch_status": "RESERVED",
+      "planned_branch": "task/P0-019-vendor-matrix"
     },
     {
       "id": "P0-020",
@@ -427,7 +672,63 @@
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
         "Obtain review and close acceptance gates"
-      ]
+      ],
+      "owned_paths": [
+        "docs/reviews/P0-020-pilot-gate.md",
+        "docs/checkpoints/P0-020.md"
+      ],
+      "technology_stack": [
+        "GitHub PR/CI evidence",
+        "Markdown",
+        "JSON"
+      ],
+      "checkpoint": "docs/checkpoints/P0-020.md",
+      "dispatch_status": "RESERVED",
+      "planned_branch": "task/P0-020-pilot-gate"
+    }
+  ],
+  "ownership_policy": {
+    "status": "DRAFT_PROGRAM_ALLOCATION",
+    "path_syntax": "Exact repository-relative files, or trailing /** for the named task subtree only. No other glob syntax.",
+    "activation": "Only P0-001 is active. Other owners require all depends_on tasks DONE, a recorded dispatch checkpoint and a verified task branch/draft PR before writes.",
+    "coordination": "Role 00 alone maintains tasks/pilot.json and docs/STATUS.md. Specialists submit checkpoint/PR evidence rather than editing these shared ledgers. P0-020 needs an explicit recorded handoff for ledger updates after P0-001 closes.",
+    "handoff": "Role 02 records any shared-path transfer in docs/governance/P0-004-integration.md; role 00 updates registry allocation. No simultaneous writers.",
+    "limits": "At most eight changed paths and 1500 source lines per response, including work within reserved subtrees.",
+    "unallocated_paths": "Read-only until role 00 records an allocation; a role title does not grant write access."
+  },
+  "review_assignments": [
+    {
+      "task_id": "P0-006",
+      "role": "11",
+      "scope": "Review boot chain, recovery and update trust assumptions in the threat model; no firmware operations.",
+      "owned_paths": [
+        "docs/reviews/P0-006-role11-boot-review.md"
+      ],
+      "planned_branch": "task/P0-006-role11-boot-review",
+      "dispatch_status": "RESERVED",
+      "activation": "After P0-006 dependencies pass and its author submits a reviewable draft."
+    },
+    {
+      "task_id": "P0-018",
+      "role": "11",
+      "scope": "Review Cuttlefish boot-evidence and recovery requirements in the builder plan; no image build required for this review.",
+      "owned_paths": [
+        "docs/reviews/P0-018-role11-boot-review.md"
+      ],
+      "planned_branch": "task/P0-018-role11-boot-review",
+      "dispatch_status": "RESERVED",
+      "activation": "After P0-018 dependencies pass and its author submits a reviewable draft."
+    },
+    {
+      "task_id": "P0-020",
+      "role": "11",
+      "scope": "Review boot/update scope and deferred hardware gates in the pilot gate report; no owner approval substitution.",
+      "owned_paths": [
+        "docs/reviews/P0-020-role11-boot-review.md"
+      ],
+      "planned_branch": "task/P0-020-role11-boot-review",
+      "dispatch_status": "RESERVED",
+      "activation": "After P0-020 dependencies pass and its author submits a reviewable draft."
     }
   ]
 }
