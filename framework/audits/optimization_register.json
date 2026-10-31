@@ -1,0 +1,56 @@
+{
+  "task": "P0-013",
+  "classification": "HYPOTHESIS - none measured or applied",
+  "upstream_repository": "platform/frameworks/base",
+  "upstream_commit": "94b4c163b7dfe5ce3607f7bb8456f9573f7de57d",
+  "candidates": [
+    {
+      "id": "F01",
+      "source_location": "services/java/com/android/server/SystemServer.java",
+      "current_behavior": "Coordinates bootstrap and subsequent service start phases",
+      "suspected_inefficiency": "Proven-independent service may block readiness",
+      "proposed_change": "Trace dependencies and test feature-flagged deferral",
+      "expected_benefit": "Potential cold-boot time reduction",
+      "compatibility_risk": "Boot order, service readiness",
+      "security_implications": "Never defer permission, watchdog or security enforcement",
+      "benchmark": "Perfetto plus 10 paired cold boots and readiness assertions",
+      "rollback_criteria": "Revert upon readiness failures, CTS regressions or p95 increase"
+    },
+    {
+      "id": "F02",
+      "source_location": "services/core/java/com/android/server/am/ActivityManagerService.java",
+      "current_behavior": "Manages app processes and service calls",
+      "suspected_inefficiency": "Some measured launch path might contain redundant IPC",
+      "proposed_change": "Profile exact callers before proposing immutable cache/batching",
+      "expected_benefit": "Potential launch p95 and IPC improvement",
+      "compatibility_risk": "Stale results and process death races",
+      "security_implications": "Keep calling identity and method guards",
+      "benchmark": "Perfetto Binder and Macrobenchmark 20 paired launches plus process-death suite",
+      "rollback_criteria": "Rollback on identity, permission, crash/ANR or p95 regression"
+    },
+    {
+      "id": "F03",
+      "source_location": "services/core/java/com/android/server/wm/WindowManagerService.java",
+      "current_behavior": "Coordinates window mutations",
+      "suspected_inefficiency": "Hot allocation may cause frame jank",
+      "proposed_change": "Measure allocations before safe object-reuse experiment",
+      "expected_benefit": "Potential lower jank, unmeasured",
+      "compatibility_risk": "Mutable state, ordering and screen artefacts",
+      "security_implications": "Preserve secure window flags and capture restrictions",
+      "benchmark": "FrameTimeline and allocation traces with window security tests",
+      "rollback_criteria": "Revert if protected-content checks or frame p95 regress"
+    },
+    {
+      "id": "F04",
+      "source_location": "core/java/android/app/ActivityThread.java",
+      "current_behavior": "Dispatches lifecycle and app-main-thread work",
+      "suspected_inefficiency": "Optional app initialization might delay first frame",
+      "proposed_change": "Audit path and conditionally defer only nonessential work",
+      "expected_benefit": "Potential first-frame improvement, unmeasured",
+      "compatibility_risk": "Lifecycle ordering and saved-state regression",
+      "security_implications": "Maintain classloader sandbox and process identity",
+      "benchmark": "Macrobenchmark starts; rotation, relaunch and CTS lifecycle tests",
+      "rollback_criteria": "Rollback on callback, restore, crash/ANR or launch p95 regression"
+    }
+  ]
+}

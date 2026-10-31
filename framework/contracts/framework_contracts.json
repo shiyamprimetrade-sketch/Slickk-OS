@@ -1,0 +1,498 @@
+{
+  "schema_version": 1,
+  "baseline": {
+    "android_release": "17",
+    "api_level": 37,
+    "tag": "android-17.0.0_r1",
+    "repository": "platform/frameworks/base",
+    "commit": "94b4c163b7dfe5ce3607f7bb8456f9573f7de57d",
+    "acceptance": "provisional"
+  },
+  "assumptions": [
+    {
+      "id": "aosp_baseline",
+      "status": "provisional",
+      "reason": "P0-002 PR #3 unmerged; source pin from proposed baseline"
+    },
+    {
+      "id": "security_review",
+      "status": "provisional",
+      "reason": "P0-006 not accepted; method permissions not yet inspected"
+    },
+    {
+      "id": "pinned_source_contents",
+      "status": "provisional",
+      "reason": "Gitiles tag index verified, individual pinned source files not retrieved"
+    }
+  ],
+  "components": [
+    {
+      "id": "system_server",
+      "kind": "bootstrap",
+      "criticality": "mandatory",
+      "api": {
+        "min": 37,
+        "max": 37,
+        "surface": "internal"
+      },
+      "source": {
+        "repository": "platform/frameworks/base",
+        "commit": "94b4c163b7dfe5ce3607f7bb8456f9573f7de57d",
+        "path": "services/java/com/android/server/SystemServer.java",
+        "inspection": "provisional_path"
+      },
+      "interfaces": [],
+      "permissions": {
+        "enforcement": "not_applicable",
+        "guards": [],
+        "reason": "No Binder service guard asserted here"
+      },
+      "dependencies": [],
+      "verification": [
+        "Exact AOSP pinned-path, interfaces, caller and signature audit",
+        "Android 17 CTS, Binder and security integration testing"
+      ]
+    },
+    {
+      "id": "activity_manager",
+      "kind": "service",
+      "criticality": "mandatory",
+      "api": {
+        "min": 37,
+        "max": 37,
+        "surface": "internal"
+      },
+      "source": {
+        "repository": "platform/frameworks/base",
+        "commit": "94b4c163b7dfe5ce3607f7bb8456f9573f7de57d",
+        "path": "services/core/java/com/android/server/am/ActivityManagerService.java",
+        "inspection": "provisional_path"
+      },
+      "interfaces": [
+        {
+          "name": "IActivityManager",
+          "kind": "aidl",
+          "descriptor": "android.app.IActivityManager",
+          "status": "provisional",
+          "permission": "unknown"
+        }
+      ],
+      "permissions": {
+        "enforcement": "unknown",
+        "guards": [],
+        "reason": "Method-level guards require pinned source and AppOps audit"
+      },
+      "dependencies": [
+        "system_server"
+      ],
+      "verification": [
+        "Exact AOSP pinned-path, interfaces, caller and signature audit",
+        "Android 17 CTS, Binder and security integration testing"
+      ]
+    },
+    {
+      "id": "activity_task_manager",
+      "kind": "service",
+      "criticality": "mandatory",
+      "api": {
+        "min": 37,
+        "max": 37,
+        "surface": "internal"
+      },
+      "source": {
+        "repository": "platform/frameworks/base",
+        "commit": "94b4c163b7dfe5ce3607f7bb8456f9573f7de57d",
+        "path": "services/core/java/com/android/server/wm/ActivityTaskManagerService.java",
+        "inspection": "provisional_path"
+      },
+      "interfaces": [
+        {
+          "name": "IActivityTaskManager",
+          "kind": "aidl",
+          "descriptor": "android.app.IActivityTaskManager",
+          "status": "provisional",
+          "permission": "unknown"
+        }
+      ],
+      "permissions": {
+        "enforcement": "unknown",
+        "guards": [],
+        "reason": "Method-level guards require pinned source and AppOps audit"
+      },
+      "dependencies": [
+        "activity_manager"
+      ],
+      "verification": [
+        "Exact AOSP pinned-path, interfaces, caller and signature audit",
+        "Android 17 CTS, Binder and security integration testing"
+      ]
+    },
+    {
+      "id": "package_manager",
+      "kind": "service",
+      "criticality": "mandatory",
+      "api": {
+        "min": 37,
+        "max": 37,
+        "surface": "internal"
+      },
+      "source": {
+        "repository": "platform/frameworks/base",
+        "commit": "94b4c163b7dfe5ce3607f7bb8456f9573f7de57d",
+        "path": "services/core/java/com/android/server/pm/PackageManagerService.java",
+        "inspection": "provisional_path"
+      },
+      "interfaces": [
+        {
+          "name": "IPackageManager",
+          "kind": "aidl",
+          "descriptor": "android.content.pm.IPackageManager",
+          "status": "provisional",
+          "permission": "unknown"
+        }
+      ],
+      "permissions": {
+        "enforcement": "unknown",
+        "guards": [],
+        "reason": "Method-level guards require pinned source and AppOps audit"
+      },
+      "dependencies": [
+        "system_server"
+      ],
+      "verification": [
+        "Exact AOSP pinned-path, interfaces, caller and signature audit",
+        "Android 17 CTS, Binder and security integration testing"
+      ]
+    },
+    {
+      "id": "permission_manager",
+      "kind": "service",
+      "criticality": "mandatory",
+      "api": {
+        "min": 37,
+        "max": 37,
+        "surface": "internal"
+      },
+      "source": {
+        "repository": "platform/frameworks/base",
+        "commit": "94b4c163b7dfe5ce3607f7bb8456f9573f7de57d",
+        "path": "services/core/java/com/android/server/pm/permission/PermissionManagerService.java",
+        "inspection": "provisional_path"
+      },
+      "interfaces": [
+        {
+          "name": "IPermissionManager",
+          "kind": "aidl",
+          "descriptor": "android.permission.IPermissionManager",
+          "status": "provisional",
+          "permission": "unknown"
+        }
+      ],
+      "permissions": {
+        "enforcement": "unknown",
+        "guards": [],
+        "reason": "Method-level guards require pinned source and AppOps audit"
+      },
+      "dependencies": [
+        "package_manager"
+      ],
+      "verification": [
+        "Exact AOSP pinned-path, interfaces, caller and signature audit",
+        "Android 17 CTS, Binder and security integration testing"
+      ]
+    },
+    {
+      "id": "window_manager",
+      "kind": "service",
+      "criticality": "mandatory",
+      "api": {
+        "min": 37,
+        "max": 37,
+        "surface": "internal"
+      },
+      "source": {
+        "repository": "platform/frameworks/base",
+        "commit": "94b4c163b7dfe5ce3607f7bb8456f9573f7de57d",
+        "path": "services/core/java/com/android/server/wm/WindowManagerService.java",
+        "inspection": "provisional_path"
+      },
+      "interfaces": [
+        {
+          "name": "IWindowManager",
+          "kind": "aidl",
+          "descriptor": "android.view.IWindowManager",
+          "status": "provisional",
+          "permission": "unknown"
+        }
+      ],
+      "permissions": {
+        "enforcement": "unknown",
+        "guards": [],
+        "reason": "Method-level guards require pinned source and AppOps audit"
+      },
+      "dependencies": [
+        "activity_task_manager"
+      ],
+      "verification": [
+        "Exact AOSP pinned-path, interfaces, caller and signature audit",
+        "Android 17 CTS, Binder and security integration testing"
+      ]
+    },
+    {
+      "id": "power_manager",
+      "kind": "service",
+      "criticality": "mandatory",
+      "api": {
+        "min": 37,
+        "max": 37,
+        "surface": "internal"
+      },
+      "source": {
+        "repository": "platform/frameworks/base",
+        "commit": "94b4c163b7dfe5ce3607f7bb8456f9573f7de57d",
+        "path": "services/core/java/com/android/server/power/PowerManagerService.java",
+        "inspection": "provisional_path"
+      },
+      "interfaces": [
+        {
+          "name": "IPowerManager",
+          "kind": "aidl",
+          "descriptor": "android.os.IPowerManager",
+          "status": "provisional",
+          "permission": "unknown"
+        }
+      ],
+      "permissions": {
+        "enforcement": "unknown",
+        "guards": [],
+        "reason": "Method-level guards require pinned source and AppOps audit"
+      },
+      "dependencies": [
+        "system_server"
+      ],
+      "verification": [
+        "Exact AOSP pinned-path, interfaces, caller and signature audit",
+        "Android 17 CTS, Binder and security integration testing"
+      ]
+    },
+    {
+      "id": "notification_manager",
+      "kind": "service",
+      "criticality": "mandatory",
+      "api": {
+        "min": 37,
+        "max": 37,
+        "surface": "internal"
+      },
+      "source": {
+        "repository": "platform/frameworks/base",
+        "commit": "94b4c163b7dfe5ce3607f7bb8456f9573f7de57d",
+        "path": "services/core/java/com/android/server/notification/NotificationManagerService.java",
+        "inspection": "provisional_path"
+      },
+      "interfaces": [
+        {
+          "name": "INotificationManager",
+          "kind": "aidl",
+          "descriptor": "android.app.INotificationManager",
+          "status": "provisional",
+          "permission": "unknown"
+        }
+      ],
+      "permissions": {
+        "enforcement": "unknown",
+        "guards": [],
+        "reason": "Method-level guards require pinned source and AppOps audit"
+      },
+      "dependencies": [
+        "package_manager"
+      ],
+      "verification": [
+        "Exact AOSP pinned-path, interfaces, caller and signature audit",
+        "Android 17 CTS, Binder and security integration testing"
+      ]
+    },
+    {
+      "id": "input_manager",
+      "kind": "service",
+      "criticality": "unknown",
+      "api": {
+        "min": 37,
+        "max": 37,
+        "surface": "internal"
+      },
+      "source": {
+        "repository": "platform/frameworks/base",
+        "commit": "94b4c163b7dfe5ce3607f7bb8456f9573f7de57d",
+        "path": "services/core/java/com/android/server/input/InputManagerService.java",
+        "inspection": "provisional_path"
+      },
+      "interfaces": [
+        {
+          "name": "IInputManager",
+          "kind": "aidl",
+          "descriptor": "android.hardware.input.IInputManager",
+          "status": "provisional",
+          "permission": "unknown"
+        }
+      ],
+      "permissions": {
+        "enforcement": "unknown",
+        "guards": [],
+        "reason": "Method-level guards require pinned source and AppOps audit"
+      },
+      "dependencies": [
+        "window_manager"
+      ],
+      "verification": [
+        "Exact AOSP pinned-path, interfaces, caller and signature audit",
+        "Android 17 CTS, Binder and security integration testing"
+      ]
+    },
+    {
+      "id": "activity_thread",
+      "kind": "app_process",
+      "criticality": "mandatory",
+      "api": {
+        "min": 37,
+        "max": 37,
+        "surface": "internal"
+      },
+      "source": {
+        "repository": "platform/frameworks/base",
+        "commit": "94b4c163b7dfe5ce3607f7bb8456f9573f7de57d",
+        "path": "core/java/android/app/ActivityThread.java",
+        "inspection": "provisional_path"
+      },
+      "interfaces": [],
+      "permissions": {
+        "enforcement": "not_applicable",
+        "guards": [],
+        "reason": "No Binder service guard asserted here"
+      },
+      "dependencies": [],
+      "verification": [
+        "Exact AOSP pinned-path, interfaces, caller and signature audit",
+        "Android 17 CTS, Binder and security integration testing"
+      ],
+      "lifecycle": {
+        "states": [
+          "CREATED",
+          "STARTED",
+          "RESUMED",
+          "PAUSED",
+          "STOPPED",
+          "DESTROYED"
+        ],
+        "transitions": [
+          [
+            "CREATED",
+            "STARTED"
+          ],
+          [
+            "STARTED",
+            "RESUMED"
+          ],
+          [
+            "RESUMED",
+            "PAUSED"
+          ],
+          [
+            "PAUSED",
+            "RESUMED"
+          ],
+          [
+            "PAUSED",
+            "STOPPED"
+          ],
+          [
+            "STOPPED",
+            "STARTED"
+          ],
+          [
+            "STOPPED",
+            "DESTROYED"
+          ],
+          [
+            "CREATED",
+            "DESTROYED"
+          ]
+        ],
+        "invariants": [
+          "No resume of same destroyed Activity instance",
+          "Partial lifecycle abstraction; not complete Android callback model"
+        ]
+      }
+    },
+    {
+      "id": "activity_sdk",
+      "kind": "sdk_api",
+      "criticality": "mandatory",
+      "api": {
+        "min": 37,
+        "max": 37,
+        "surface": "sdk"
+      },
+      "source": {
+        "repository": "platform/frameworks/base",
+        "commit": "94b4c163b7dfe5ce3607f7bb8456f9573f7de57d",
+        "path": "core/java/android/app/Activity.java",
+        "inspection": "provisional_path"
+      },
+      "interfaces": [
+        {
+          "name": "activity_sdk",
+          "kind": "sdk",
+          "descriptor": null,
+          "status": "provisional",
+          "permission": "not_applicable"
+        }
+      ],
+      "permissions": {
+        "enforcement": "not_applicable",
+        "guards": [],
+        "reason": "No Binder service guard asserted here"
+      },
+      "dependencies": [],
+      "verification": [
+        "Exact AOSP pinned-path, interfaces, caller and signature audit",
+        "Android 17 CTS, Binder and security integration testing"
+      ]
+    },
+    {
+      "id": "context_sdk",
+      "kind": "sdk_api",
+      "criticality": "mandatory",
+      "api": {
+        "min": 37,
+        "max": 37,
+        "surface": "sdk"
+      },
+      "source": {
+        "repository": "platform/frameworks/base",
+        "commit": "94b4c163b7dfe5ce3607f7bb8456f9573f7de57d",
+        "path": "core/java/android/content/Context.java",
+        "inspection": "provisional_path"
+      },
+      "interfaces": [
+        {
+          "name": "context_sdk",
+          "kind": "sdk",
+          "descriptor": null,
+          "status": "provisional",
+          "permission": "not_applicable"
+        }
+      ],
+      "permissions": {
+        "enforcement": "not_applicable",
+        "guards": [],
+        "reason": "No Binder service guard asserted here"
+      },
+      "dependencies": [],
+      "verification": [
+        "Exact AOSP pinned-path, interfaces, caller and signature audit",
+        "Android 17 CTS, Binder and security integration testing"
+      ]
+    }
+  ]
+}
