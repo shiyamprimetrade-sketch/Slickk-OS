@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "notes": "Task owned_paths override fallback role scopes. Exact paths and /** subtree notation only. Chat IDs are not GitHub reviewer accounts.",
+  "role_scopes": {
+    "00": ["tasks/**", "docs/STATUS.md", "docs/PROJECT_CHARTER.md", "docs/checkpoints/**"],
+    "01": ["architecture/**"],
+    "02": ["integration/**", ".github/**"],
+    "03": ["verification/**"],
+    "04": ["security/**"],
+    "05": ["kernel/**"],
+    "06": ["hal/**", "device/**"],
+    "07": ["runtime/**", "native/**"],
+    "08": ["framework/**"],
+    "09": ["apps/**", "ux/**"],
+    "10": ["graphics/**", "media/**", "network/**"],
+    "11": ["boot/**", "update/**"],
+    "12": ["build/**"]
+  }
+}
