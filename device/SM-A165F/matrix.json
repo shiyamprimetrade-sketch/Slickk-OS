@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "synthetic": false,
+  "device": {"model": "SM-A165F", "model_status": "USER-REPORTED", "model_evidence": "owner-input"},
+  "software": {
+    "android_release": "16", "api_level": null, "abi": "arm64-v8a", "kernel_release": null,
+    "evidence": {"android_release": "owner-input", "abi": "owner-input"}
+  },
+  "evidence": [
+    {"id": "owner-input", "kind": "user_report", "scope": "exact_device", "source": "Slickk-OS project owner, 2026-10-31", "detail": "Model SM-A165F, Android 16, ARM64 reported; not corroborated with command output"},
+    {"id": "aosp-vintf", "kind": "official_doc", "scope": "generic", "source": "https://source.android.com/docs/core/architecture/vintf", "detail": "Generic manifest and compatibility matrix requirements, not target hardware proof"}
+  ],
+  "capabilities": [
+    {"name": "cpu_memory", "status": "UNKNOWN", "interface": "Linux scheduler, memory, Power HAL", "evidence": [], "notes": "CPU type and memory controllers not read from handset"},
+    {"name": "display_touch", "status": "UNKNOWN", "interface": "InputReader, input drivers, graphics composer HAL", "evidence": [], "notes": "Panel, touch firmware and calibration unconfirmed"},
+    {"name": "gpu", "status": "UNKNOWN", "interface": "graphics composer/allocator, EGL/Vulkan vendor drivers", "evidence": [], "notes": "GPU driver and firmware unconfirmed"},
+    {"name": "camera", "status": "UNKNOWN", "interface": "android.hardware.camera.provider", "evidence": [], "notes": "Sensor, ISP, metadata and vendor implementation unconfirmed"},
+    {"name": "audio", "status": "UNKNOWN", "interface": "android.hardware.audio.core, audio policy and ALSA", "evidence": [], "notes": "Speaker, microphone and codecs untested"},
+    {"name": "wifi", "status": "UNKNOWN", "interface": "android.hardware.wifi, nl80211 and vendor firmware", "evidence": [], "notes": "Chipset and vendor service unconfirmed"},
+    {"name": "bluetooth", "status": "UNKNOWN", "interface": "android.hardware.bluetooth and vendor transport", "evidence": [], "notes": "Controller and vendor stack unconfirmed"},
+    {"name": "nfc", "status": "UNKNOWN", "interface": "android.hardware.nfc", "evidence": [], "notes": "May be absent in some variants; do not infer absence"},
+    {"name": "cellular", "status": "UNKNOWN", "interface": "android.hardware.radio and modem vendor services", "evidence": [], "notes": "Telephony, VoLTE, IMS, RF firmware untested"},
+    {"name": "gps", "status": "UNKNOWN", "interface": "android.hardware.gnss", "evidence": [], "notes": "Location implementation untested"},
+    {"name": "motion_sensors", "status": "UNKNOWN", "interface": "android.hardware.sensors", "evidence": [], "notes": "Accelerometer, gyroscope, others not inventoried"},
+    {"name": "usb", "status": "UNKNOWN", "interface": "android.hardware.usb, configfs and kernel USB", "evidence": [], "notes": "Data/charging modes and recovery interfaces untested"},
+    {"name": "battery_charging", "status": "UNKNOWN", "interface": "android.hardware.health, Power HAL and fuel-gauge driver", "evidence": [], "notes": "Battery/charging and thermal behavior untested"},
+    {"name": "storage", "status": "UNKNOWN", "interface": "block drivers, vold, fstab, fscrypt", "evidence": [], "notes": "Partition layout and controller not investigated"},
+    {"name": "fingerprint", "status": "UNKNOWN", "interface": "android.hardware.biometrics.fingerprint", "evidence": [], "notes": "Presence, vendor TA and enrollment unconfirmed"},
+    {"name": "tee", "status": "UNKNOWN", "interface": "android.hardware.security.keymint, TEE/vendor trustlets", "evidence": [], "notes": "Secure environment and key attestation unconfirmed"},
+    {"name": "encryption", "status": "UNKNOWN", "interface": "fscrypt, vold, KeyMint and inline crypto", "evidence": [], "notes": "File-based encryption and key path not inspected"}
+  ],
+  "interfaces": [
+    {"path": "/vendor/etc/vintf/manifest.xml", "status": "UNKNOWN", "evidence": [], "declared_hal_packages": []},
+    {"path": "/odm/etc/vintf/manifest.xml", "status": "UNKNOWN", "evidence": [], "declared_hal_packages": []},
+    {"path": "/system/etc/vintf/manifest.xml", "status": "UNKNOWN", "evidence": [], "declared_hal_packages": []},
+    {"path": "/vendor/etc/vintf/compatibility_matrix.xml", "status": "UNKNOWN", "evidence": [], "declared_hal_packages": []}
+  ],
+  "feasibility": [
+    {"name": "bootloader_unlockable", "status": "UNKNOWN", "interface": "OEM policy, bootloader state", "evidence": [], "notes": "Unlocked state is not the same as unlock eligibility"},
+    {"name": "kernel_source", "status": "UNKNOWN", "interface": "Samsung open source release package, exact build", "evidence": [], "notes": "No matching exact firmware/kernel source revision authenticated"},
+    {"name": "device_tree", "status": "UNKNOWN", "interface": "Board DTS and product build configuration", "evidence": [], "notes": "Compatible and licensed board source not obtained"},
+    {"name": "vendor_modules", "status": "UNKNOWN", "interface": "vendor_boot, vendor_dlkm, KMI", "evidence": [], "notes": "Kernel ABI and vendor module availability unknown"},
+    {"name": "vintf_hal", "status": "UNKNOWN", "interface": "libvintf, lshal, AIDL service registration", "evidence": [], "notes": "Real device manifests not inspected or matched"},
+    {"name": "recovery", "status": "UNKNOWN", "interface": "AVB, recovery boot and restore procedure", "evidence": [], "notes": "No validated recovery path"},
+    {"name": "physical_os_boot", "status": "UNTESTED", "interface": "boot chain, system/vendor compatibility and CTS/VTS", "evidence": [], "notes": "No Slickk-OS image or SM-A165F boot trial"}
+  ]
+}
