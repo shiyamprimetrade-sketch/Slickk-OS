@@ -1,0 +1,27 @@
+name: Integration governance
+on:
+  pull_request:
+    types: [opened, synchronize, edited, reopened, ready_for_review, converted_to_draft]
+permissions:
+  contents: read
+jobs:
+  governance:
+    if: startsWith(github.head_ref, 'task/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Unit tests
+        run: python3 -m unittest discover -s integration -p 'test_*.py' -v
+      - name: Registry check
+        run: python3 scripts/validate_registry.py
+      - name: Pull-request ownership and dependency check
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: python3 integration/validate_pr.py --event "$GITHUB_EVENT_PATH" --base "$PR_BASE_SHA"
