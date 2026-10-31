@@ -1,0 +1,15 @@
+.gradle/
+build/
+out/
+*.apk
+*.aab
+*.img
+*.keystore
+*.jks
+*.pem
+*.key
+*.log
+.env
+local.properties
+.DS_Store
+__pycache__/

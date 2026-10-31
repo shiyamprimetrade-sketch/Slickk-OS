@@ -1,0 +1,421 @@
+{
+  "project": "Slickk-OS",
+  "version": 1,
+  "notes": "All TODO; completion is evidence-gated, not conversation-gated",
+  "tasks": [
+    {
+      "id": "P0-001",
+      "phase": 0,
+      "role": "00",
+      "title": "Approve product charter",
+      "depends_on": [],
+      "acceptance": "Reviewed mission, intended users, tracked success criteria",
+      "state": "TODO",
+      "step": 1,
+      "steps": [
+        "Verify repository inputs and preconditions",
+        "Define implementation/inspection plan and exact contracts",
+        "Execute bounded work or experiment",
+        "Run available checks and capture logs",
+        "Submit branch/PR, evidence and checkpoint",
+        "Obtain review and close acceptance gates"
+      ]
+    },
+    {
+      "id": "P0-002",
+      "phase": 0,
+      "role": "01",
+      "title": "Pin upstream AOSP baseline",
+      "depends_on": [
+        "P0-001"
+      ],
+      "acceptance": "Verified release tag, license and exact upstream commit",
+      "state": "TODO",
+      "step": 1,
+      "steps": [
+        "Verify repository inputs and preconditions",
+        "Define implementation/inspection plan and exact contracts",
+        "Execute bounded work or experiment",
+        "Run available checks and capture logs",
+        "Submit branch/PR, evidence and checkpoint",
+        "Obtain review and close acceptance gates"
+      ]
+    },
+    {
+      "id": "P0-003",
+      "phase": 0,
+      "role": "06",
+      "title": "Audit SM-A165F and target feasibility",
+      "depends_on": [
+        "P0-001"
+      ],
+      "acceptance": "Device capability matrix with explicit unknowns; no flashes",
+      "state": "TODO",
+      "step": 1,
+      "steps": [
+        "Verify repository inputs and preconditions",
+        "Define implementation/inspection plan and exact contracts",
+        "Execute bounded work or experiment",
+        "Run available checks and capture logs",
+        "Submit branch/PR, evidence and checkpoint",
+        "Obtain review and close acceptance gates"
+      ]
+    },
+    {
+      "id": "P0-004",
+      "phase": 0,
+      "role": "02",
+      "title": "Establish branch and PR governance",
+      "depends_on": [
+        "P0-001"
+      ],
+      "acceptance": "Documented branch ownership and protected-main configuration",
+      "state": "TODO",
+      "step": 1,
+      "steps": [
+        "Verify repository inputs and preconditions",
+        "Define implementation/inspection plan and exact contracts",
+        "Execute bounded work or experiment",
+        "Run available checks and capture logs",
+        "Submit branch/PR, evidence and checkpoint",
+        "Obtain review and close acceptance gates"
+      ]
+    },
+    {
+      "id": "P0-005",
+      "phase": 0,
+      "role": "12",
+      "title": "Validate registry and CI",
+      "depends_on": [
+        "P0-004"
+      ],
+      "acceptance": "Executable registry validator and CI result",
+      "state": "TODO",
+      "step": 1,
+      "steps": [
+        "Verify repository inputs and preconditions",
+        "Define implementation/inspection plan and exact contracts",
+        "Execute bounded work or experiment",
+        "Run available checks and capture logs",
+        "Submit branch/PR, evidence and checkpoint",
+        "Obtain review and close acceptance gates"
+      ]
+    },
+    {
+      "id": "P0-006",
+      "phase": 0,
+      "role": "04",
+      "title": "Write preliminary threat model",
+      "depends_on": [
+        "P0-001"
+      ],
+      "acceptance": "Threats, assets, attack surface, assumptions and mitigations",
+      "state": "TODO",
+      "step": 1,
+      "steps": [
+        "Verify repository inputs and preconditions",
+        "Define implementation/inspection plan and exact contracts",
+        "Execute bounded work or experiment",
+        "Run available checks and capture logs",
+        "Submit branch/PR, evidence and checkpoint",
+        "Obtain review and close acceptance gates"
+      ]
+    },
+    {
+      "id": "P0-007",
+      "phase": 0,
+      "role": "03",
+      "title": "Define performance measurement protocol",
+      "depends_on": [
+        "P0-001"
+      ],
+      "acceptance": "Reproducible benchmark protocol and metrics",
+      "state": "TODO",
+      "step": 1,
+      "steps": [
+        "Verify repository inputs and preconditions",
+        "Define implementation/inspection plan and exact contracts",
+        "Execute bounded work or experiment",
+        "Run available checks and capture logs",
+        "Submit branch/PR, evidence and checkpoint",
+        "Obtain review and close acceptance gates"
+      ]
+    },
+    {
+      "id": "P0-008",
+      "phase": 0,
+      "role": "03",
+      "title": "Collect safe baseline phone observations",
+      "depends_on": [
+        "P0-003",
+        "P0-007"
+      ],
+      "acceptance": "Read-only user-supplied baseline with test limitations",
+      "state": "TODO",
+      "step": 1,
+      "steps": [
+        "Verify repository inputs and preconditions",
+        "Define implementation/inspection plan and exact contracts",
+        "Execute bounded work or experiment",
+        "Run available checks and capture logs",
+        "Submit branch/PR, evidence and checkpoint",
+        "Obtain review and close acceptance gates"
+      ]
+    },
+    {
+      "id": "P0-009",
+      "phase": 0,
+      "role": "09",
+      "title": "Map essential user journeys",
+      "depends_on": [
+        "P0-001"
+      ],
+      "acceptance": "Prioritized accessible tasks, friction and baseline steps",
+      "state": "TODO",
+      "step": 1,
+      "steps": [
+        "Verify repository inputs and preconditions",
+        "Define implementation/inspection plan and exact contracts",
+        "Execute bounded work or experiment",
+        "Run available checks and capture logs",
+        "Submit branch/PR, evidence and checkpoint",
+        "Obtain review and close acceptance gates"
+      ]
+    },
+    {
+      "id": "P0-010",
+      "phase": 0,
+      "role": "01",
+      "title": "AOSP optimization audit shortlist",
+      "depends_on": [
+        "P0-002",
+        "P0-007"
+      ],
+      "acceptance": "Top 10 evidenced candidate bottlenecks, no speculative deletions",
+      "state": "TODO",
+      "step": 1,
+      "steps": [
+        "Verify repository inputs and preconditions",
+        "Define implementation/inspection plan and exact contracts",
+        "Execute bounded work or experiment",
+        "Run available checks and capture logs",
+        "Submit branch/PR, evidence and checkpoint",
+        "Obtain review and close acceptance gates"
+      ]
+    },
+    {
+      "id": "P0-011",
+      "phase": 0,
+      "role": "09",
+      "title": "Specify Slickk Launcher UX",
+      "depends_on": [
+        "P0-009"
+      ],
+      "acceptance": "Flows, accessibility requirements and first feature flag",
+      "state": "TODO",
+      "step": 1,
+      "steps": [
+        "Verify repository inputs and preconditions",
+        "Define implementation/inspection plan and exact contracts",
+        "Execute bounded work or experiment",
+        "Run available checks and capture logs",
+        "Submit branch/PR, evidence and checkpoint",
+        "Obtain review and close acceptance gates"
+      ]
+    },
+    {
+      "id": "P0-012",
+      "phase": 0,
+      "role": "09",
+      "title": "Create buildable launcher skeleton",
+      "depends_on": [
+        "P0-005",
+        "P0-011"
+      ],
+      "acceptance": "Real APK build or transparently reported toolchain blocker",
+      "state": "TODO",
+      "step": 1,
+      "steps": [
+        "Verify repository inputs and preconditions",
+        "Define implementation/inspection plan and exact contracts",
+        "Execute bounded work or experiment",
+        "Run available checks and capture logs",
+        "Submit branch/PR, evidence and checkpoint",
+        "Obtain review and close acceptance gates"
+      ]
+    },
+    {
+      "id": "P0-013",
+      "phase": 0,
+      "role": "08",
+      "title": "Define framework compatibility contracts",
+      "depends_on": [
+        "P0-002",
+        "P0-006"
+      ],
+      "acceptance": "API/ABI boundaries and platform change policy",
+      "state": "TODO",
+      "step": 1,
+      "steps": [
+        "Verify repository inputs and preconditions",
+        "Define implementation/inspection plan and exact contracts",
+        "Execute bounded work or experiment",
+        "Run available checks and capture logs",
+        "Submit branch/PR, evidence and checkpoint",
+        "Obtain review and close acceptance gates"
+      ]
+    },
+    {
+      "id": "P0-014",
+      "phase": 0,
+      "role": "04",
+      "title": "Specify privacy and opt-in telemetry",
+      "depends_on": [
+        "P0-006"
+      ],
+      "acceptance": "No collection-by-default, retention and control policy",
+      "state": "TODO",
+      "step": 1,
+      "steps": [
+        "Verify repository inputs and preconditions",
+        "Define implementation/inspection plan and exact contracts",
+        "Execute bounded work or experiment",
+        "Run available checks and capture logs",
+        "Submit branch/PR, evidence and checkpoint",
+        "Obtain review and close acceptance gates"
+      ]
+    },
+    {
+      "id": "P0-015",
+      "phase": 0,
+      "role": "07",
+      "title": "Plan native hot-path profiling",
+      "depends_on": [
+        "P0-007"
+      ],
+      "acceptance": "Profiler instrumentation and rollback-aware experiment design",
+      "state": "TODO",
+      "step": 1,
+      "steps": [
+        "Verify repository inputs and preconditions",
+        "Define implementation/inspection plan and exact contracts",
+        "Execute bounded work or experiment",
+        "Run available checks and capture logs",
+        "Submit branch/PR, evidence and checkpoint",
+        "Obtain review and close acceptance gates"
+      ]
+    },
+    {
+      "id": "P0-016",
+      "phase": 0,
+      "role": "05",
+      "title": "Identify kernel memory/power evaluation scope",
+      "depends_on": [
+        "P0-002",
+        "P0-007"
+      ],
+      "acceptance": "Target kernel and no-regression audit scope",
+      "state": "TODO",
+      "step": 1,
+      "steps": [
+        "Verify repository inputs and preconditions",
+        "Define implementation/inspection plan and exact contracts",
+        "Execute bounded work or experiment",
+        "Run available checks and capture logs",
+        "Submit branch/PR, evidence and checkpoint",
+        "Obtain review and close acceptance gates"
+      ]
+    },
+    {
+      "id": "P0-017",
+      "phase": 0,
+      "role": "10",
+      "title": "Define media and network benchmarks",
+      "depends_on": [
+        "P0-007"
+      ],
+      "acceptance": "Repeatable video, audio and networking test matrix",
+      "state": "TODO",
+      "step": 1,
+      "steps": [
+        "Verify repository inputs and preconditions",
+        "Define implementation/inspection plan and exact contracts",
+        "Execute bounded work or experiment",
+        "Run available checks and capture logs",
+        "Submit branch/PR, evidence and checkpoint",
+        "Obtain review and close acceptance gates"
+      ]
+    },
+    {
+      "id": "P0-018",
+      "phase": 0,
+      "role": "12",
+      "title": "Audit Cuttlefish builder feasibility",
+      "depends_on": [
+        "P0-002"
+      ],
+      "acceptance": "Host resource assessment and reproducible setup plan",
+      "state": "TODO",
+      "step": 1,
+      "steps": [
+        "Verify repository inputs and preconditions",
+        "Define implementation/inspection plan and exact contracts",
+        "Execute bounded work or experiment",
+        "Run available checks and capture logs",
+        "Submit branch/PR, evidence and checkpoint",
+        "Obtain review and close acceptance gates"
+      ]
+    },
+    {
+      "id": "P0-019",
+      "phase": 0,
+      "role": "06",
+      "title": "Draft device/vendor compatibility matrix",
+      "depends_on": [
+        "P0-002",
+        "P0-003"
+      ],
+      "acceptance": "Treble/VINTF/KMI known/unknown evidence matrix",
+      "state": "TODO",
+      "step": 1,
+      "steps": [
+        "Verify repository inputs and preconditions",
+        "Define implementation/inspection plan and exact contracts",
+        "Execute bounded work or experiment",
+        "Run available checks and capture logs",
+        "Submit branch/PR, evidence and checkpoint",
+        "Obtain review and close acceptance gates"
+      ]
+    },
+    {
+      "id": "P0-020",
+      "phase": 0,
+      "role": "00",
+      "title": "Review pilot and select Phase 1 goals",
+      "depends_on": [
+        "P0-005",
+        "P0-008",
+        "P0-010",
+        "P0-012",
+        "P0-013",
+        "P0-014",
+        "P0-015",
+        "P0-016",
+        "P0-017",
+        "P0-018",
+        "P0-019"
+      ],
+      "acceptance": "Independent pilot acceptance; owner-approved phase transition",
+      "state": "TODO",
+      "step": 1,
+      "steps": [
+        "Verify repository inputs and preconditions",
+        "Define implementation/inspection plan and exact contracts",
+        "Execute bounded work or experiment",
+        "Run available checks and capture logs",
+        "Submit branch/PR, evidence and checkpoint",
+        "Obtain review and close acceptance gates"
+      ]
+    }
+  ]
+}

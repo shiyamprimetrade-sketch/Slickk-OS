@@ -1,0 +1,16 @@
+name: Validate planning registry
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  registry:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/validate_registry.py
