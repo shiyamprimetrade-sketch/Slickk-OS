@@ -6,7 +6,7 @@ Scope: read-only structured-observation analyzer, C++17 host benchmark and rollb
 
 - Foundation PR #1: open/draft/unmerged. Branch is based on planning/slickk-os-foundation and PR targets the same branch.
 - P0-007 PR #5: implementation branch task/P0-007-benchmark-protocol exists, open/draft, not accepted. Its benchmarks/PROTOCOL.md and benchmarks/schema.json were inspected. Matched comparisons, type-7 P95, minimum five independent pairs and no-claims safeguards are adopted provisionally. No benchmark-owned paths were changed.
-- P0-002 PR #3: architecture/baseline/pins.json reports Android 17/API 37, tag android-17.0.0_r1, ART project commit b753cf97923c3695338d21466fa14c57b480a59a. These were READ FROM THE PROJECT PIN FILE. Attempts to load the individual files at the pinned ART commit failed in the research tool, so pin-to-source verification is UNAVAILABLE and the baseline remains provisional. The tag does not prove the current production patch level.
+- P0-002 PR #3 initially supplied the project pin. **INDEPENDENTLY VERIFIED** with direct official Gitiles page retrieval on 2026-10-31: annotated platform/art tag android-17.0.0_r1, tag object fc31298bb626c4b5d53ae3b715c42a2daa802c08, peels to commit b753cf97923c3695338d21466fa14c57b480a59a. The page labels Android 17.0.0 release 1. Six selected files were retrieved at that exact commit with the blob identifiers below. This does NOT establish an actual Android build, checkout, October security patch or OS compatibility.
 
 ## Upstream evidence inspected
 
@@ -20,7 +20,21 @@ Scope: read-only structured-observation analyzer, C++17 host benchmark and rollb
 | JNI | Official local/global reference and thread handling guidance | https://developer.android.com/ndk/guides/jni-tips |
 | CPU/native profiling | Official Android simpleperf and Perfetto guidance | https://source.android.com/docs/core/tests/debug/eval_perf |
 
-Provisional source paths under platform/art at the P0-002 pin: runtime/runtime.cc (initialization), runtime/class_linker.cc (class linking), runtime/jit/jit.cc (JIT), runtime/gc/heap.cc (allocation and GC), runtime/jni/jni_internal.cc (JNI methods), runtime/thread.cc (thread lifecycle). The specific pinned files are UNVERIFIED in this session. Source root: https://android.googlesource.com/platform/art/+/b753cf97923c3695338d21466fa14c57b480a59a/
+**VERIFIED pinned files** — official ART Gitiles pages returned HTTP 200, matching exact commit and displaying Git blob identifiers (2026-10-31). Roles and entrypoints were checked in retrieved source where specified. Links below use the exact commit, not floating main.
+
+| Exact pinned path | Git blob SHA | Inspected symbol/role |
+|---|---|---|
+| runtime/runtime.cc | ea1052882a714e4d90407f080ff15e9fd92ae11a | Runtime startup/lifecycle source |
+| runtime/class_linker.cc | 4b3c66770f82cfb8d34eca693e50f4827cb3dbf5 | FindClass and EnsureInitialized |
+| runtime/jit/jit.cc | 94c2efc1eceff0b1af13fb6071b25013823891b7 | Jit::Create and CompileMethodInternal |
+| runtime/gc/heap.cc | 817eb14f95168a19e3e021bcf06f542458c1a968 | TrimSpaces, RequestTrim and GetBytesAllocated |
+| runtime/jni/jni_internal.cc | 15db66e10cefbd179a42c7edeb9f5c880700367e | GetPrimitiveArrayCritical, NewGlobalRef, DeleteLocalRef |
+| runtime/thread.cc | c3a28d5815c0a0906f41426a7e0edcc3e4d44d1e | ART thread implementation |
+
+Pinned source directory: https://android.googlesource.com/platform/art/+/b753cf97923c3695338d21466fa14c57b480a59a/
+Pinned tag: https://android.googlesource.com/platform/art/+/refs/tags/android-17.0.0_r1
+
+Individual paths append to the source directory above. Blob identity on Gitiles is independent source provenance, not evidence of downloaded compiled ART or measured performance. Full manifest/other project pins remain dependent on P0-002 integration.
 
 ## Data ingestion contract, v1.0
 
