@@ -1,7 +1,7 @@
 {
   "project": "Slickk-OS",
   "version": 1,
-  "notes": "P0-001 Steps 1–2 completed; next step=3. Other pilot tasks remain TODO. Reserved paths/planned branches are allocation metadata, not dispatch or completion.",
+  "notes": "P0-001 implementation complete on its task branch under protocol v2; not merged or released. Other task results must be read from their own branches; no automatic new assignment.",
   "tasks": [
     {
       "id": "P0-001",
@@ -10,19 +10,23 @@
       "title": "Approve product charter",
       "depends_on": [],
       "acceptance": "Reviewed mission, intended users, tracked success criteria",
-      "state": "IN_PROGRESS",
-      "step": 3,
+      "state": "DONE",
+      "step": 6,
       "steps": [
         "Verify repository inputs and preconditions",
         "Define implementation/inspection plan and exact contracts",
         "Execute bounded work or experiment",
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
-        "Obtain review and close acceptance gates"
+        "Review mission/users/criteria against evidence and close implementation acceptance; track merge approval separately"
       ],
       "completed_steps": [
         1,
-        2
+        2,
+        3,
+        4,
+        5,
+        6
       ],
       "branch": "task/P0-001-product-charter",
       "base_commit": "69ae8b43738919923c76178a79015c657adcb503",
@@ -32,7 +36,8 @@
         "docs/PROJECT_CHARTER.md",
         "docs/contracts/P0-001-product-contract.md",
         "docs/checkpoints/P0-001-step2-checks.json",
-        "docs/checkpoints/P0-001.md"
+        "docs/checkpoints/P0-001.md",
+        "scripts/validate_p0_001.py"
       ],
       "checkpoint": "docs/checkpoints/P0-001.md",
       "technology_stack": [
@@ -42,8 +47,31 @@
         "Python 3 registry validation",
         "GitHub Actions"
       ],
-      "dispatch_status": "ACTIVE",
-      "contract": "docs/contracts/P0-001-product-contract.md"
+      "dispatch_status": "IMPLEMENTATION_COMPLETE",
+      "contract": "docs/contracts/P0-001-product-contract.md",
+      "implementation_status": "COMPLETE",
+      "merge_status": "NOT_MERGED",
+      "pr_url": "https://github.com/shiyamprimetrade-sketch/Slickk-OS/pull/2",
+      "validation_commands": [
+        "python3 scripts/validate_registry.py",
+        "python3 scripts/validate_p0_001.py --self-test",
+        "python3 scripts/validate_p0_001.py --require-complete"
+      ],
+      "acceptance_review": {
+        "type": "RESPONSIBLE_ROLE_SELF_REVIEW",
+        "reviewed_by_role": "00",
+        "result": "PASS",
+        "independent_approval": "NOT_CLAIMED",
+        "basis": "Original task acceptance: reviewed mission, intended users, tracked success criteria; responsible-role assessment under owner standing authorization and protocol v2.",
+        "evidence": [
+          "docs/PROJECT_CHARTER.md",
+          "docs/contracts/P0-001-product-contract.md",
+          "docs/checkpoints/P0-001.md",
+          "scripts/validate_p0_001.py"
+        ],
+        "merge_approval": "NOT_GRANTED"
+      },
+      "next_action": "STOP_AWAIT_NEW_TASK"
     },
     {
       "id": "P0-002",
@@ -68,7 +96,8 @@
         "docs/baselines/P0-002-aosp-baseline.md",
         "docs/ARCHITECTURE.md",
         "docs/RESEARCH_REFERENCES.md",
-        "docs/checkpoints/P0-002.md"
+        "docs/checkpoints/P0-002.md",
+        "architecture/**"
       ],
       "technology_stack": [
         "AOSP source metadata",
@@ -77,8 +106,9 @@
         "JSON"
       ],
       "checkpoint": "docs/checkpoints/P0-002.md",
-      "dispatch_status": "RESERVED",
-      "planned_branch": "task/P0-002-aosp-baseline"
+      "dispatch_status": "INDEPENDENTLY_AUTHORIZED",
+      "planned_branch": "task/P0-002-aosp-baseline",
+      "execution_note": "May proceed under protocol v2 without Chat 00 approval; no execution or completion is inferred from this authorization."
     },
     {
       "id": "P0-003",
@@ -136,7 +166,9 @@
         "docs/governance/P0-004-integration.md",
         "docs/CONTINUATION_PROTOCOL.md",
         "CONTRIBUTING.md",
-        "docs/checkpoints/P0-004.md"
+        "docs/checkpoints/P0-004.md",
+        "integration/**",
+        ".github/**"
       ],
       "technology_stack": [
         "Git",
@@ -144,8 +176,9 @@
         "Markdown"
       ],
       "checkpoint": "docs/checkpoints/P0-004.md",
-      "dispatch_status": "RESERVED",
-      "planned_branch": "task/P0-004-branch-governance"
+      "dispatch_status": "INDEPENDENTLY_AUTHORIZED",
+      "planned_branch": "task/P0-004-integration-governance",
+      "execution_note": "May proceed under protocol v2 without Chat 00 approval; no execution or completion is inferred from this authorization."
     },
     {
       "id": "P0-005",
@@ -168,7 +201,6 @@
       ],
       "owned_paths": [
         "scripts/validate_registry.py",
-        ".github/workflows/validate-planning.yml",
         "docs/validation/P0-005-registry-ci.md",
         "docs/checkpoints/P0-005.md"
       ],
@@ -688,13 +720,19 @@
     }
   ],
   "ownership_policy": {
-    "status": "DRAFT_PROGRAM_ALLOCATION",
+    "status": "RECORDED_PROGRAM_ALLOCATION",
     "path_syntax": "Exact repository-relative files, or trailing /** for the named task subtree only. No other glob syntax.",
-    "activation": "Only P0-001 is active. Other owners require all depends_on tasks DONE, a recorded dispatch checkpoint and a verified task branch/draft PR before writes.",
-    "coordination": "Role 00 alone maintains tasks/pilot.json and docs/STATUS.md. Specialists submit checkpoint/PR evidence rather than editing these shared ledgers. P0-020 needs an explicit recorded handoff for ledger updates after P0-001 closes.",
-    "handoff": "Role 02 records any shared-path transfer in docs/governance/P0-004-integration.md; role 00 updates registry allocation. No simultaneous writers.",
+    "activation": "Assigned roles may independently research, implement, test, commit on task branches and open draft PRs. Unfinished approval/documentation dependencies allow reversible provisional work; technical prerequisites and evidence requirements remain mandatory.",
+    "coordination": "Each task owner records its implementation result in its own checkpoint and task-branch registry entry; do not change another task's result. Shared-ledger integration is asynchronous. Chat 00 availability is not required to execute or finish assigned work.",
+    "handoff": "Record path changes or transfers in task checkpoint/PR; respect active owners. Prior inactive reservations may be reconciled with explicit owner instructions. Cross-task conflicts need deliberate integration, not concurrent overwrites.",
     "limits": "At most eight changed paths and 1500 source lines per response, including work within reserved subtrees.",
-    "unallocated_paths": "Read-only until role 00 records an allocation; a role title does not grant write access."
+    "unallocated_paths": "Use assigned task paths and explicit owner-authorized role scope; record bounded additions in the task checkpoint/PR. Do not overwrite another active task's files.",
+    "ledger_updates": "Task-branch registry status updates for one's own task are shared administrative metadata, not a claim of exclusive registry ownership; preserve other entries. Resolve cross-branch edits before integration.",
+    "allocation_changes": [
+      "Owner-authorized Chat 01 scope adds architecture/** to P0-002.",
+      "Owner-authorized Chat 02 scope adds integration/** and .github/** to P0-004; transfers the inactive .github/workflows/validate-planning.yml reservation from P0-005. P0-005 retains scripts/validate_registry.py and its report/checkpoint.",
+      "Temporary upstream synchronization of docs/CONTINUATION_PROTOCOL.md and prompts/00_master.md copies foundation blobs exactly; it grants Chat 00 no continuing ownership of role-02 protocol changes."
+    ]
   },
   "review_assignments": [
     {
@@ -706,7 +744,7 @@
       ],
       "planned_branch": "task/P0-006-role11-boot-review",
       "dispatch_status": "RESERVED",
-      "activation": "After P0-006 dependencies pass and its author submits a reviewable draft."
+      "activation": "After a reviewable candidate exists; unfinished documentation/approval permits provisional review under protocol v2. Record any unmet technical prerequisite."
     },
     {
       "task_id": "P0-018",
@@ -717,7 +755,7 @@
       ],
       "planned_branch": "task/P0-018-role11-boot-review",
       "dispatch_status": "RESERVED",
-      "activation": "After P0-018 dependencies pass and its author submits a reviewable draft."
+      "activation": "After a reviewable candidate exists; unfinished documentation/approval permits provisional review under protocol v2. Record any unmet technical prerequisite."
     },
     {
       "task_id": "P0-020",
@@ -728,7 +766,17 @@
       ],
       "planned_branch": "task/P0-020-role11-boot-review",
       "dispatch_status": "RESERVED",
-      "activation": "After P0-020 dependencies pass and its author submits a reviewable draft."
+      "activation": "After a reviewable candidate exists; unfinished documentation/approval permits provisional review under protocol v2. Record any unmet technical prerequisite."
     }
-  ]
+  ],
+  "operating_protocol": {
+    "version": 2,
+    "source_commit": "7f178f5599c6cce507f71f477e3ba15dcecbc875",
+    "source_branch": "planning/slickk-os-foundation",
+    "implementation_authorization": "STANDING",
+    "documentation_dependencies": "PROVISIONAL_IMPLEMENTATION_ALLOWED",
+    "technical_dependencies": "MUST_BE_VERIFIED",
+    "merge_authorization": "SEPARATE",
+    "normal_chat_fallback": "https://github.com/shiyamprimetrade-sketch/Slickk-OS/blob/planning/slickk-os-foundation/prompts/00_normal_fallback.md"
+  }
 }
