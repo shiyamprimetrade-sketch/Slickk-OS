@@ -148,22 +148,31 @@ def analyze(data, regression_pct=5):
             raise ValidationError(f"{workload}/{metric}: insufficient independent paired sessions")
         values = {"android": [], "slickk-os": []}
         stable_controls = None
+        stable_builds = None
+        order_counts = {1: 0, 2: 0}
         for iteration, pair in sorted(iterations.items()):
             if set(pair) != {"android", "slickk-os"}:
                 raise ValidationError(f"{workload}/{metric}: iteration {iteration} missing variant")
             a, b = pair["android"], pair["slickk-os"]
+            builds = (a["os_build"], b["os_build"])
+            if stable_builds is not None and builds != stable_builds:
+                raise ValidationError(f"{workload}/{metric}: inconsistent OS builds across iterations")
+            stable_builds = builds
             snapshot = tuple(json.dumps(a[k], sort_keys=True) for k in CONTROL)
             if stable_controls is not None and snapshot != stable_controls:
                 raise ValidationError(f"{workload}/{metric}: inconsistent workload across iterations")
             stable_controls = snapshot
             if a["order"] == b["order"]:
                 raise ValidationError(f"{workload}/{metric}: invalid trial order in pair {iteration}")
+            order_counts[a["order"]] += 1
             if any(a[k] != b[k] for k in CONTROL):
                 raise ValidationError(f"{workload}/{metric}: unmatched conditions at iteration {iteration}")
             if abs(a["start_temp_c"] - b["start_temp_c"]) > 2 or abs(a["battery_soc_pct"] - b["battery_soc_pct"]) > 5:
                 raise ValidationError(f"{workload}/{metric}: thermal or battery confound in pair {iteration}")
             for label in values:
                 values[label].append(pair[label]["value"])
+        if abs(order_counts[1] - order_counts[2]) > 1:
+            raise ValidationError(f"{workload}/{metric}: imbalanced AB/BA trial order")
         baseline, candidate = (stats(values[k]) for k in ("android", "slickk-os"))
         name = spec["aggregate"]
         x, y = baseline[name], candidate[name]
