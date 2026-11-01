@@ -40,6 +40,16 @@ Source boundaries: apps use Android SDK `Choreographer`, FrameMetrics, MediaCode
 - **AudioFlinger / FAST mixer / AudioTrack / AudioRecord / HAL:** https://source.android.com/docs/core/audio/latency/design and https://source.android.com/docs/core/audio/terminology . **Inspected `main` directory listing:** https://android.googlesource.com/platform/frameworks/av/+/refs/heads/main/services/audioflinger/ (`931d1904290fe8b0c69e320044a585e77e9a3f4a` at inspection). Audio output route, buffer policy and scheduling affect underruns; latency optimizations are hypotheses until loopback measurements.
 - **MediaCodec / Codec2:** https://developer.android.com/reference/android/media/MediaCodec and https://developer.android.com/reference/android/media/MediaPlayer.MetricsConstants . Available metrics include codec instance and playback-frame counts; capability support and metrics are API/device dependent. No codec implementation or hardware acceleration was tested here.
 
+### Inspected source files (moving `main`, as retrieved 2026-11-01)
+
+The following **actual upstream source pages** were inspected, with Gitiles blob IDs (which identify file contents, not a pinned product release):
+
+- [SurfaceFlinger.cpp](https://android.googlesource.com/platform/frameworks/native/+/refs/heads/main/services/surfaceflinger/SurfaceFlinger.cpp): blob `8c6ae0e7aa83ccf5a0af5a4f814c2bd870fb90ba` from upstream source listing; direct retrieval subsequently timed out. FrameTimeline source directory listing was accessible.
+- [AudioFlinger.cpp](https://android.googlesource.com/platform/frameworks/av/+/refs/heads/main/services/audioflinger/AudioFlinger.cpp): blob `c67fa134158a6cd2585c6e81624543f564ad1426`.
+- [MediaCodec.cpp](https://android.googlesource.com/platform/frameworks/av/+/refs/heads/main/media/libstagefright/MediaCodec.cpp): blob `7b10d8a5500fdff5c1d4b26b4aaaea81d95a32fc`. Includes Codec2-related headers and buffer interfaces; no full data-flow profiling performed.
+
+**Limit:** no full AOSP checkout, pinned release revision/manifest validation, CTS, vendor driver inspection or real trace. The source URLs can change as `main` advances. Re-pin to the P0-002 approved release before source-level optimization.
+
 ## No-regression gates and rollback
 
 1. **Visual/UX:** no clipping, flicker, input lag, hidden accessibility controls or increased reproducible jank; test screen reader, animations, scaling, refresh modes.
