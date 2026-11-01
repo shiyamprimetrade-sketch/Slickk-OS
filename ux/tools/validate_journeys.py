@@ -83,7 +83,7 @@ def validate_catalog(data):
                     continue
                 if type(step.get("seq")) is not int or step["seq"] != seq:
                     err("STEP_SEQUENCE", sp + ".seq", f"expected contiguous step number {seq}")
-                if step.get("action") not in ACTIONS:
+                if not isinstance(step.get("action"), str) or step["action"] not in ACTIONS:
                     err("INVALID_ACTION", sp + ".action", "unknown action; consult ACTIONS")
                 for field in ("target", "expected"):
                     if not isinstance(step.get(field), str) or not step[field].strip():
@@ -96,16 +96,16 @@ def validate_catalog(data):
                 if not isinstance(access.get(field), str) or not access[field].strip():
                     err("ACCESSIBILITY", p + ".accessibility." + field, "explicit requirement required")
         surface = journey.get("surface")
-        if surface not in SURFACES:
+        if not isinstance(surface, str) or surface not in SURFACES:
             err("SURFACE", p + ".surface", "must be launcher, system_ui or external_app")
         capabilities = journey.get("capabilities")
         if not isinstance(capabilities, list) or not capabilities:
             err("CAPABILITY", p + ".capabilities", "nonempty array required")
         else:
             for cap in capabilities:
-                if cap not in CAPABILITIES:
+                if not isinstance(cap, str) or cap not in CAPABILITIES:
                     err("CAPABILITY", p + ".capabilities", f"unsupported capability {cap!r}")
-                elif surface not in CAPABILITIES[cap]:
+                elif not isinstance(surface, str) or surface not in CAPABILITIES[cap]:
                     err("PRIVILEGE", p + ".capabilities", f"{surface} cannot directly perform {cap}")
         permissions = journey.get("required_permissions")
         if not isinstance(permissions, list):
@@ -117,7 +117,7 @@ def validate_catalog(data):
             err("EVIDENCE", p + ".evidence", "evidence object required")
             continue
         baseline_status, proposal_status = evidence.get("baseline_status"), evidence.get("proposal_status")
-        if baseline_status not in STATUS or proposal_status not in STATUS:
+        if not isinstance(baseline_status, str) or baseline_status not in STATUS or not isinstance(proposal_status, str) or proposal_status not in STATUS:
             err("EVIDENCE", p + ".evidence", "invalid evidence classification")
         if proposal_status == "VERIFIED" and not evidence.get("proposal_evidence_ref"):
             err("EVIDENCE", p + ".evidence.proposal_evidence_ref", "VERIFIED proposal needs traceable source")
@@ -153,8 +153,8 @@ def report(data):
     journeys = journeys if isinstance(journeys, list) else []
     valid = [j for j in journeys if isinstance(j, dict)]
     return {"ok": not errors, "journey_count": len(valid),
-            "surface_counts": dict(Counter(j.get("surface", "unknown") for j in valid)),
-            "evidence_counts": dict(Counter(j.get("evidence", {}).get("baseline_status", "unknown")
+            "surface_counts": dict(Counter(j.get("surface") if isinstance(j.get("surface"), str) else "invalid" for j in valid)),
+            "evidence_counts": dict(Counter(j["evidence"].get("baseline_status") if isinstance(j["evidence"].get("baseline_status"), str) else "invalid"
                                             for j in valid if isinstance(j.get("evidence"), dict))),
             "errors": errors,
             "journey_ids": [j.get("id") for j in valid]}
