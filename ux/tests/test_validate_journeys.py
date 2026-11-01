@@ -87,6 +87,25 @@ class JourneyValidatorTests(unittest.TestCase):
         data["journeys"][0]["evidence"]["proposal_status"] = "VERIFIED"
         self.assert_error(data, "EVIDENCE")
 
+    def test_malformed_json_value_types_negative(self):
+        cases = [("baseline_steps", "action", [], "INVALID_ACTION"),
+                 ("capabilities", None, [{}], "CAPABILITY"),
+                 ("surface", None, {}, "SURFACE"),
+                 ("evidence", "baseline_status", [], "EVIDENCE")]
+        for field, nested, value, expected in cases:
+            with self.subTest(field=field, nested=nested):
+                data = self.synthetic()
+                j = data["journeys"][0]
+                if field == "baseline_steps":
+                    j[field][0][nested] = value
+                elif nested:
+                    j[field][nested] = value
+                else:
+                    j[field] = value
+                outcome = validator.report(data)
+                self.assertFalse(outcome["ok"])
+                self.assertIn(expected, {e["code"] for e in outcome["errors"]})
+
     def test_null_measurements_positive(self):
         data = self.synthetic()
         self.assertTrue(all(j["evidence"]["observed_duration_ms"] is None for j in data["journeys"]))
