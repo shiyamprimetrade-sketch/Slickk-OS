@@ -50,3 +50,26 @@ build and checks of signing-key custody, secrets, licenses, ABI/API compatibilit
 and release readiness. Run PR governance separately on Chat 02's integration branch
 when available; no ownership or branch protection success is inferred here.
 Rollback: close this unmerged draft PR or revert its commit(s) on a separate branch.
+
+## Android build architecture reference (not executed)
+AOSP's Repo tool selects and syncs a multi-repository manifest; Android platform
+source modules use Soong blueprint files (Android.bp), with Kati/Ninja as build
+components. The established reference flow is a pinned manifest, environment
+setup, lunch target, then m build; Cuttlefish boot is a **separate**, KVM-dependent
+test. Android app builds use Android SDK/Gradle; Android Common Kernel uses its
+own version-specific build tooling. Those are distinct product/test pipelines.
+Official references:
+- https://source.android.com/docs/setup/download
+- https://source.android.com/docs/setup/build
+- https://source.android.com/docs/setup/build/building
+- https://source.android.com/docs/devices/cuttlefish/get-started
+- https://developer.android.com/build
+
+### Observed local tools (2026-11-01, disposable QA container only)
+Linux x86_64 kernel 6.18.57; Python 3.13.5; Git 2.47.3.
+Present: ninja at /usr/bin/ninja, Java/javac, clang, sha256sum.
+Absent from PATH: repo, soong_ui, gradle, adb, sdkmanager.
+AOSP checkout absent; Cuttlefish not attempted; KVM not assessed for P0-005.
+Environment-specific installation or availability on a future dedicated
+builder, GitHub hosted runner, or user's computer is **not** inferred.
+Successful Python QA does not establish any Android build or boot feasibility.
