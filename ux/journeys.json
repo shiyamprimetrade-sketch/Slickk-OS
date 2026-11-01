@@ -1,0 +1,907 @@
+{
+ "schema_version": 1,
+ "catalog_status": "PROVISIONAL",
+ "purpose": "Unobserved reference paths and testable UX hypotheses; not device measurements",
+ "journeys": [
+  {
+   "id": "UX-001",
+   "title": "Launch installed application",
+   "priority": 1,
+   "audience": [
+    "U1",
+    "U2"
+   ],
+   "prerequisites": [
+    "Device unlocked; target application installed"
+   ],
+   "baseline_steps": [
+    {
+     "seq": 1,
+     "action": "tap",
+     "target": "App icon or app drawer",
+     "expected": "Installed apps become selectable"
+    },
+    {
+     "seq": 2,
+     "action": "tap",
+     "target": "Target app icon",
+     "expected": "Target app foreground"
+    }
+   ],
+   "proposed_steps": [
+    {
+     "seq": 1,
+     "action": "tap",
+     "target": "Visible app search",
+     "expected": "Search becomes available"
+    },
+    {
+     "seq": 2,
+     "action": "type",
+     "target": "Target app name",
+     "expected": "Matching installed apps shown"
+    },
+    {
+     "seq": 3,
+     "action": "tap",
+     "target": "Result",
+     "expected": "Target app foreground"
+    }
+   ],
+   "friction": "App location and naming may change",
+   "success_criterion": "Selected installed app becomes usable without unintended app launch",
+   "surface": "launcher",
+   "capabilities": [
+    "search_apps"
+   ],
+   "required_permissions": [],
+   "privacy": "No inventory leaves device; launcher package visibility must follow Android restrictions",
+   "accessibility": {
+    "screen_reader": "All controls named, focusable, and meaningful in TalkBack order",
+    "large_text": "At 200% text scale, labels remain readable without hiding critical controls",
+    "motor": "Touch targets at least 48 dp; no time-critical gesture-only action",
+    "contrast": "Status and selection never conveyed by color alone",
+    "keyboard": "Alternative keyboard or switch access reaches every step"
+   },
+   "interaction_target_max": null,
+   "evidence": {
+    "baseline_status": "UNTESTED",
+    "proposal_status": "HYPOTHESIS",
+    "observed": false,
+    "observation_source": null,
+    "observed_duration_ms": null,
+    "observed_interactions": null,
+    "observed_errors": null,
+    "reference_url": "https://developer.android.com/guide/components/intents-common"
+   }
+  },
+  {
+   "id": "UX-002",
+   "title": "Open camera",
+   "priority": 1,
+   "audience": [
+    "U1",
+    "U2"
+   ],
+   "prerequisites": [
+    "A camera application is installed and available"
+   ],
+   "baseline_steps": [
+    {
+     "seq": 1,
+     "action": "tap",
+     "target": "Camera launcher shortcut",
+     "expected": "Camera app opens"
+    }
+   ],
+   "proposed_steps": [
+    {
+     "seq": 1,
+     "action": "tap",
+     "target": "Clearly labeled camera shortcut",
+     "expected": "Existing camera app opens"
+    }
+   ],
+   "friction": "Camera entry point may be hard to locate",
+   "success_criterion": "User sees a ready camera preview, subject to target app permissions",
+   "surface": "launcher",
+   "capabilities": [
+    "open_camera_app"
+   ],
+   "required_permissions": [],
+   "privacy": "External camera application owns camera permission; launcher does not acquire it",
+   "accessibility": {
+    "screen_reader": "All controls named, focusable, and meaningful in TalkBack order",
+    "large_text": "At 200% text scale, labels remain readable without hiding critical controls",
+    "motor": "Touch targets at least 48 dp; no time-critical gesture-only action",
+    "contrast": "Status and selection never conveyed by color alone",
+    "keyboard": "Alternative keyboard or switch access reaches every step"
+   },
+   "interaction_target_max": 1,
+   "evidence": {
+    "baseline_status": "UNTESTED",
+    "proposal_status": "HYPOTHESIS",
+    "observed": false,
+    "observation_source": null,
+    "observed_duration_ms": null,
+    "observed_interactions": null,
+    "observed_errors": null,
+    "reference_url": "https://developer.android.com/guide/components/intents-common"
+   }
+  },
+  {
+   "id": "UX-003",
+   "title": "Start phone call",
+   "priority": 1,
+   "audience": [
+    "U1",
+    "U2"
+   ],
+   "prerequisites": [
+    "Device has a dialer; call service available if call is placed"
+   ],
+   "baseline_steps": [
+    {
+     "seq": 1,
+     "action": "tap",
+     "target": "Phone application",
+     "expected": "Dialer opens"
+    },
+    {
+     "seq": 2,
+     "action": "tap",
+     "target": "Keypad or contact",
+     "expected": "Number entry available"
+    },
+    {
+     "seq": 3,
+     "action": "type",
+     "target": "Phone number",
+     "expected": "Number shown for confirmation"
+    }
+   ],
+   "proposed_steps": [
+    {
+     "seq": 1,
+     "action": "tap",
+     "target": "Phone shortcut",
+     "expected": "System dialer opens"
+    },
+    {
+     "seq": 2,
+     "action": "type",
+     "target": "Phone number",
+     "expected": "System dialer shows number"
+    }
+   ],
+   "friction": "Dialer entry may be buried in app grid",
+   "success_criterion": "Dialer displays intended number; call initiation stays user-controlled",
+   "surface": "launcher",
+   "capabilities": [
+    "open_dialer"
+   ],
+   "required_permissions": [],
+   "privacy": "Use ACTION_DIAL rather than ACTION_CALL; no CALL_PHONE permission required for launcher",
+   "accessibility": {
+    "screen_reader": "All controls named, focusable, and meaningful in TalkBack order",
+    "large_text": "At 200% text scale, labels remain readable without hiding critical controls",
+    "motor": "Touch targets at least 48 dp; no time-critical gesture-only action",
+    "contrast": "Status and selection never conveyed by color alone",
+    "keyboard": "Alternative keyboard or switch access reaches every step"
+   },
+   "interaction_target_max": null,
+   "evidence": {
+    "baseline_status": "UNTESTED",
+    "proposal_status": "HYPOTHESIS",
+    "observed": false,
+    "observation_source": null,
+    "observed_duration_ms": null,
+    "observed_interactions": null,
+    "observed_errors": null,
+    "reference_url": "https://developer.android.com/guide/components/intents-common"
+   }
+  },
+  {
+   "id": "UX-004",
+   "title": "Find contact",
+   "priority": 1,
+   "audience": [
+    "U1",
+    "U2"
+   ],
+   "prerequisites": [
+    "Contacts-capable application installed; permission handled by that application"
+   ],
+   "baseline_steps": [
+    {
+     "seq": 1,
+     "action": "tap",
+     "target": "Contacts app",
+     "expected": "Contact list opens"
+    },
+    {
+     "seq": 2,
+     "action": "tap",
+     "target": "Search field",
+     "expected": "Text input ready"
+    },
+    {
+     "seq": 3,
+     "action": "type",
+     "target": "Contact name",
+     "expected": "Matches shown"
+    },
+    {
+     "seq": 4,
+     "action": "tap",
+     "target": "Matching entry",
+     "expected": "Contact details appear"
+    }
+   ],
+   "proposed_steps": [
+    {
+     "seq": 1,
+     "action": "tap",
+     "target": "Contacts shortcut",
+     "expected": "Contacts application opens"
+    },
+    {
+     "seq": 2,
+     "action": "tap",
+     "target": "Contact search",
+     "expected": "Search becomes available"
+    },
+    {
+     "seq": 3,
+     "action": "type",
+     "target": "Contact name",
+     "expected": "Matching contact displayed"
+    }
+   ],
+   "friction": "Contact search can require multiple navigation transitions",
+   "success_criterion": "Correct contact detail is visible without exposure to unrelated app",
+   "surface": "launcher",
+   "capabilities": [
+    "open_contacts_app"
+   ],
+   "required_permissions": [],
+   "privacy": "Contacts app owns access to stored contacts; launcher does not read the address book",
+   "accessibility": {
+    "screen_reader": "All controls named, focusable, and meaningful in TalkBack order",
+    "large_text": "At 200% text scale, labels remain readable without hiding critical controls",
+    "motor": "Touch targets at least 48 dp; no time-critical gesture-only action",
+    "contrast": "Status and selection never conveyed by color alone",
+    "keyboard": "Alternative keyboard or switch access reaches every step"
+   },
+   "interaction_target_max": null,
+   "evidence": {
+    "baseline_status": "UNTESTED",
+    "proposal_status": "HYPOTHESIS",
+    "observed": false,
+    "observation_source": null,
+    "observed_duration_ms": null,
+    "observed_interactions": null,
+    "observed_errors": null,
+    "reference_url": "https://developer.android.com/guide/components/intents-common"
+   }
+  },
+  {
+   "id": "UX-005",
+   "title": "Connect to Wi-Fi",
+   "priority": 1,
+   "audience": [
+    "U1",
+    "U2"
+   ],
+   "prerequisites": [
+    "Device Wi-Fi radio and reachable network; credentials if required"
+   ],
+   "baseline_steps": [
+    {
+     "seq": 1,
+     "action": "swipe",
+     "target": "System quick settings shade",
+     "expected": "Connectivity controls visible"
+    },
+    {
+     "seq": 2,
+     "action": "tap",
+     "target": "Internet or Wi-Fi control",
+     "expected": "Network options visible"
+    },
+    {
+     "seq": 3,
+     "action": "select",
+     "target": "Desired network",
+     "expected": "System connection flow starts"
+    },
+    {
+     "seq": 4,
+     "action": "confirm",
+     "target": "Network credentials if required",
+     "expected": "System handles authorization"
+    }
+   ],
+   "proposed_steps": [
+    {
+     "seq": 1,
+     "action": "tap",
+     "target": "Launcher internet entry",
+     "expected": "Android internet panel opens"
+    },
+    {
+     "seq": 2,
+     "action": "select",
+     "target": "Desired network",
+     "expected": "User chooses network in system UI"
+    },
+    {
+     "seq": 3,
+     "action": "confirm",
+     "target": "Credentials if prompted",
+     "expected": "System handles connection"
+    }
+   ],
+   "friction": "Quick-settings layout varies by OEM and version",
+   "success_criterion": "System reports connected to intended network without unauthorized network switching",
+   "surface": "launcher",
+   "capabilities": [
+    "open_internet_panel"
+   ],
+   "required_permissions": [],
+   "privacy": "Launcher opens a supported Settings panel; system alone performs connection change",
+   "accessibility": {
+    "screen_reader": "All controls named, focusable, and meaningful in TalkBack order",
+    "large_text": "At 200% text scale, labels remain readable without hiding critical controls",
+    "motor": "Touch targets at least 48 dp; no time-critical gesture-only action",
+    "contrast": "Status and selection never conveyed by color alone",
+    "keyboard": "Alternative keyboard or switch access reaches every step"
+   },
+   "interaction_target_max": null,
+   "evidence": {
+    "baseline_status": "UNTESTED",
+    "proposal_status": "HYPOTHESIS",
+    "observed": false,
+    "observation_source": null,
+    "observed_duration_ms": null,
+    "observed_interactions": null,
+    "observed_errors": null,
+    "reference_url": "https://developer.android.com/guide/components/intents-common"
+   }
+  },
+  {
+   "id": "UX-006",
+   "title": "Manage notification",
+   "priority": 1,
+   "audience": [
+    "U1",
+    "U2"
+   ],
+   "prerequisites": [
+    "An application has posted a notification"
+   ],
+   "baseline_steps": [
+    {
+     "seq": 1,
+     "action": "swipe",
+     "target": "Notification shade",
+     "expected": "Notifications shown"
+    },
+    {
+     "seq": 2,
+     "action": "select",
+     "target": "Target notification",
+     "expected": "Actions displayed"
+    },
+    {
+     "seq": 3,
+     "action": "tap",
+     "target": "System-provided notification action",
+     "expected": "Desired system action applied"
+    }
+   ],
+   "proposed_steps": [
+    {
+     "seq": 1,
+     "action": "swipe",
+     "target": "Notification shade",
+     "expected": "System notifications shown"
+    },
+    {
+     "seq": 2,
+     "action": "select",
+     "target": "Notification controls",
+     "expected": "Relevant management options visible"
+    },
+    {
+     "seq": 3,
+     "action": "confirm",
+     "target": "Desired management option",
+     "expected": "System confirms change"
+    }
+   ],
+   "friction": "Controls and grouping differ across Android variants",
+   "success_criterion": "Chosen notification state or preference changes with clear feedback",
+   "surface": "system_ui",
+   "capabilities": [
+    "manage_notifications"
+   ],
+   "required_permissions": [],
+   "privacy": "No scraping notification content; OS-managed controls only, no launcher listener assumed",
+   "accessibility": {
+    "screen_reader": "All controls named, focusable, and meaningful in TalkBack order",
+    "large_text": "At 200% text scale, labels remain readable without hiding critical controls",
+    "motor": "Touch targets at least 48 dp; no time-critical gesture-only action",
+    "contrast": "Status and selection never conveyed by color alone",
+    "keyboard": "Alternative keyboard or switch access reaches every step"
+   },
+   "interaction_target_max": null,
+   "evidence": {
+    "baseline_status": "UNTESTED",
+    "proposal_status": "HYPOTHESIS",
+    "observed": false,
+    "observation_source": null,
+    "observed_duration_ms": null,
+    "observed_interactions": null,
+    "observed_errors": null,
+    "reference_url": "https://developer.android.com/guide/components/intents-common"
+   }
+  },
+  {
+   "id": "UX-007",
+   "title": "Change common setting",
+   "priority": 2,
+   "audience": [
+    "U1",
+    "U2"
+   ],
+   "prerequisites": [
+    "System Settings application accessible"
+   ],
+   "baseline_steps": [
+    {
+     "seq": 1,
+     "action": "swipe",
+     "target": "Quick settings",
+     "expected": "System controls appear"
+    },
+    {
+     "seq": 2,
+     "action": "tap",
+     "target": "Settings icon",
+     "expected": "Settings app opens"
+    },
+    {
+     "seq": 3,
+     "action": "select",
+     "target": "Relevant settings category",
+     "expected": "Desired control found"
+    }
+   ],
+   "proposed_steps": [
+    {
+     "seq": 1,
+     "action": "tap",
+     "target": "Launcher settings shortcut",
+     "expected": "System settings opens"
+    },
+    {
+     "seq": 2,
+     "action": "select",
+     "target": "Relevant setting",
+     "expected": "System-managed setting visible"
+    }
+   ],
+   "friction": "Settings categories may be deeply nested",
+   "success_criterion": "User reaches the intended setting and can confirm its state",
+   "surface": "launcher",
+   "capabilities": [
+    "open_settings"
+   ],
+   "required_permissions": [],
+   "privacy": "No privileged direct toggle: launcher only opens Android Settings",
+   "accessibility": {
+    "screen_reader": "All controls named, focusable, and meaningful in TalkBack order",
+    "large_text": "At 200% text scale, labels remain readable without hiding critical controls",
+    "motor": "Touch targets at least 48 dp; no time-critical gesture-only action",
+    "contrast": "Status and selection never conveyed by color alone",
+    "keyboard": "Alternative keyboard or switch access reaches every step"
+   },
+   "interaction_target_max": null,
+   "evidence": {
+    "baseline_status": "UNTESTED",
+    "proposal_status": "HYPOTHESIS",
+    "observed": false,
+    "observation_source": null,
+    "observed_duration_ms": null,
+    "observed_interactions": null,
+    "observed_errors": null,
+    "reference_url": "https://developer.android.com/guide/components/intents-common"
+   }
+  },
+  {
+   "id": "UX-008",
+   "title": "Switch between applications",
+   "priority": 1,
+   "audience": [
+    "U1",
+    "U2"
+   ],
+   "prerequisites": [
+    "At least two running applications"
+   ],
+   "baseline_steps": [
+    {
+     "seq": 1,
+     "action": "system_navigation",
+     "target": "System Overview gesture or button",
+     "expected": "Recent tasks visible"
+    },
+    {
+     "seq": 2,
+     "action": "select",
+     "target": "Other application",
+     "expected": "Selected app foreground"
+    }
+   ],
+   "proposed_steps": [
+    {
+     "seq": 1,
+     "action": "system_navigation",
+     "target": "OS task switch gesture",
+     "expected": "Recent tasks accessible"
+    },
+    {
+     "seq": 2,
+     "action": "select",
+     "target": "Other application",
+     "expected": "Selected app foreground"
+    }
+   ],
+   "friction": "Gesture discovery and task previews vary",
+   "success_criterion": "Intended running app resumes without lost work",
+   "surface": "system_ui",
+   "capabilities": [
+    "switch_system_tasks"
+   ],
+   "required_permissions": [],
+   "privacy": "Switcher belongs to system UI; standard launcher may not control system recents",
+   "accessibility": {
+    "screen_reader": "All controls named, focusable, and meaningful in TalkBack order",
+    "large_text": "At 200% text scale, labels remain readable without hiding critical controls",
+    "motor": "Touch targets at least 48 dp; no time-critical gesture-only action",
+    "contrast": "Status and selection never conveyed by color alone",
+    "keyboard": "Alternative keyboard or switch access reaches every step"
+   },
+   "interaction_target_max": null,
+   "evidence": {
+    "baseline_status": "UNTESTED",
+    "proposal_status": "HYPOTHESIS",
+    "observed": false,
+    "observation_source": null,
+    "observed_duration_ms": null,
+    "observed_interactions": null,
+    "observed_errors": null,
+    "reference_url": "https://developer.android.com/guide/components/intents-common"
+   }
+  },
+  {
+   "id": "UX-009",
+   "title": "Find downloaded file",
+   "priority": 2,
+   "audience": [
+    "U1",
+    "U2"
+   ],
+   "prerequisites": [
+    "A file downloaded and storage access granted to chosen file manager"
+   ],
+   "baseline_steps": [
+    {
+     "seq": 1,
+     "action": "tap",
+     "target": "Files application",
+     "expected": "File browser opens"
+    },
+    {
+     "seq": 2,
+     "action": "select",
+     "target": "Downloads location",
+     "expected": "Downloads visible"
+    },
+    {
+     "seq": 3,
+     "action": "tap",
+     "target": "Downloaded item",
+     "expected": "File opens with compatible handler"
+    }
+   ],
+   "proposed_steps": [
+    {
+     "seq": 1,
+     "action": "tap",
+     "target": "Launcher Downloads shortcut",
+     "expected": "System documents or file app opens"
+    },
+    {
+     "seq": 2,
+     "action": "select",
+     "target": "Downloads",
+     "expected": "User sees stored downloads"
+    },
+    {
+     "seq": 3,
+     "action": "tap",
+     "target": "File",
+     "expected": "Compatible handler opens"
+    }
+   ],
+   "friction": "Downloads may be separated across apps and folders",
+   "success_criterion": "User can select and open intended downloaded document",
+   "surface": "launcher",
+   "capabilities": [
+    "open_documents_ui"
+   ],
+   "required_permissions": [],
+   "privacy": "Use system file picker/file app; launcher does not request broad storage permission",
+   "accessibility": {
+    "screen_reader": "All controls named, focusable, and meaningful in TalkBack order",
+    "large_text": "At 200% text scale, labels remain readable without hiding critical controls",
+    "motor": "Touch targets at least 48 dp; no time-critical gesture-only action",
+    "contrast": "Status and selection never conveyed by color alone",
+    "keyboard": "Alternative keyboard or switch access reaches every step"
+   },
+   "interaction_target_max": null,
+   "evidence": {
+    "baseline_status": "UNTESTED",
+    "proposal_status": "HYPOTHESIS",
+    "observed": false,
+    "observation_source": null,
+    "observed_duration_ms": null,
+    "observed_interactions": null,
+    "observed_errors": null,
+    "reference_url": "https://developer.android.com/guide/components/intents-common"
+   }
+  },
+  {
+   "id": "UX-010",
+   "title": "Adjust privacy control",
+   "priority": 1,
+   "audience": [
+    "U1",
+    "U2"
+   ],
+   "prerequisites": [
+    "Supported Android privacy controls available for device"
+   ],
+   "baseline_steps": [
+    {
+     "seq": 1,
+     "action": "tap",
+     "target": "Settings",
+     "expected": "System settings opens"
+    },
+    {
+     "seq": 2,
+     "action": "select",
+     "target": "Privacy or permission manager",
+     "expected": "Privacy controls visible"
+    },
+    {
+     "seq": 3,
+     "action": "select",
+     "target": "Target app permission",
+     "expected": "System options visible"
+    },
+    {
+     "seq": 4,
+     "action": "confirm",
+     "target": "User-chosen permission mode",
+     "expected": "Updated permission displayed"
+    }
+   ],
+   "proposed_steps": [
+    {
+     "seq": 1,
+     "action": "tap",
+     "target": "Privacy entry in system settings",
+     "expected": "System permission controls visible"
+    },
+    {
+     "seq": 2,
+     "action": "select",
+     "target": "App permission",
+     "expected": "User sees current state"
+    },
+    {
+     "seq": 3,
+     "action": "confirm",
+     "target": "Permission choice",
+     "expected": "System records explicit decision"
+    }
+   ],
+   "friction": "Controls can be difficult to discover",
+   "success_criterion": "Target app permission reflects explicitly chosen value",
+   "surface": "system_ui",
+   "capabilities": [
+    "change_privacy_controls"
+   ],
+   "required_permissions": [],
+   "privacy": "No privacy permission changes by third-party launcher; no hidden telemetry",
+   "accessibility": {
+    "screen_reader": "All controls named, focusable, and meaningful in TalkBack order",
+    "large_text": "At 200% text scale, labels remain readable without hiding critical controls",
+    "motor": "Touch targets at least 48 dp; no time-critical gesture-only action",
+    "contrast": "Status and selection never conveyed by color alone",
+    "keyboard": "Alternative keyboard or switch access reaches every step"
+   },
+   "interaction_target_max": null,
+   "evidence": {
+    "baseline_status": "UNTESTED",
+    "proposal_status": "HYPOTHESIS",
+    "observed": false,
+    "observation_source": null,
+    "observed_duration_ms": null,
+    "observed_interactions": null,
+    "observed_errors": null,
+    "reference_url": "https://developer.android.com/guide/components/intents-common"
+   }
+  },
+  {
+   "id": "UX-011",
+   "title": "Use one-handed navigation",
+   "priority": 2,
+   "audience": [
+    "U1",
+    "U2"
+   ],
+   "prerequisites": [
+    "One-handed feature supported on reference build, if present"
+   ],
+   "baseline_steps": [
+    {
+     "seq": 1,
+     "action": "tap",
+     "target": "Settings",
+     "expected": "System settings opens"
+    },
+    {
+     "seq": 2,
+     "action": "select",
+     "target": "One-handed setting when available",
+     "expected": "Mode option visible"
+    },
+    {
+     "seq": 3,
+     "action": "confirm",
+     "target": "User selection",
+     "expected": "OS one-handed behavior enabled"
+    }
+   ],
+   "proposed_steps": [
+    {
+     "seq": 1,
+     "action": "select",
+     "target": "Accessible OS one-handed entry",
+     "expected": "One-handed settings or feature appears"
+    },
+    {
+     "seq": 2,
+     "action": "confirm",
+     "target": "User option",
+     "expected": "One-handed behavior available"
+    }
+   ],
+   "friction": "Large displays increase reach burden; feature availability varies",
+   "success_criterion": "Primary controls remain reachable and reversible on supported device",
+   "surface": "system_ui",
+   "capabilities": [
+    "one_handed_system_mode"
+   ],
+   "required_permissions": [],
+   "privacy": "No launcher gesture interception or global navigation control assumed",
+   "accessibility": {
+    "screen_reader": "All controls named, focusable, and meaningful in TalkBack order",
+    "large_text": "At 200% text scale, labels remain readable without hiding critical controls",
+    "motor": "Touch targets at least 48 dp; no time-critical gesture-only action",
+    "contrast": "Status and selection never conveyed by color alone",
+    "keyboard": "Alternative keyboard or switch access reaches every step"
+   },
+   "interaction_target_max": null,
+   "evidence": {
+    "baseline_status": "UNTESTED",
+    "proposal_status": "HYPOTHESIS",
+    "observed": false,
+    "observation_source": null,
+    "observed_duration_ms": null,
+    "observed_interactions": null,
+    "observed_errors": null,
+    "reference_url": "https://developer.android.com/guide/components/intents-common"
+   }
+  },
+  {
+   "id": "UX-012",
+   "title": "Use accessibility features",
+   "priority": 1,
+   "audience": [
+    "U1",
+    "U2"
+   ],
+   "prerequisites": [
+    "System accessibility settings available; assistive technology installed if needed"
+   ],
+   "baseline_steps": [
+    {
+     "seq": 1,
+     "action": "tap",
+     "target": "Settings",
+     "expected": "System settings opens"
+    },
+    {
+     "seq": 2,
+     "action": "select",
+     "target": "Accessibility",
+     "expected": "Available accommodations shown"
+    },
+    {
+     "seq": 3,
+     "action": "select",
+     "target": "Screen reader or display option",
+     "expected": "Option configuration visible"
+    },
+    {
+     "seq": 4,
+     "action": "confirm",
+     "target": "User-selected setting",
+     "expected": "Chosen accommodation active"
+    }
+   ],
+   "proposed_steps": [
+    {
+     "seq": 1,
+     "action": "tap",
+     "target": "Accessibility entry in system settings",
+     "expected": "Available accommodations shown"
+    },
+    {
+     "seq": 2,
+     "action": "select",
+     "target": "Desired feature",
+     "expected": "Configuration becomes available"
+    },
+    {
+     "seq": 3,
+     "action": "confirm",
+     "target": "User choice",
+     "expected": "Feature state clearly indicated"
+    }
+   ],
+   "friction": "Feature labels and location differ across OS builds",
+   "success_criterion": "User activates selected assistive feature and can reverse it",
+   "surface": "system_ui",
+   "capabilities": [
+    "change_accessibility_settings"
+   ],
+   "required_permissions": [],
+   "privacy": "Assistive features require informed user action; no AccessibilityService abuse",
+   "accessibility": {
+    "screen_reader": "All controls named, focusable, and meaningful in TalkBack order",
+    "large_text": "At 200% text scale, labels remain readable without hiding critical controls",
+    "motor": "Touch targets at least 48 dp; no time-critical gesture-only action",
+    "contrast": "Status and selection never conveyed by color alone",
+    "keyboard": "Alternative keyboard or switch access reaches every step"
+   },
+   "interaction_target_max": null,
+   "evidence": {
+    "baseline_status": "UNTESTED",
+    "proposal_status": "HYPOTHESIS",
+    "observed": false,
+    "observation_source": null,
+    "observed_duration_ms": null,
+    "observed_interactions": null,
+    "observed_errors": null,
+    "reference_url": "https://developer.android.com/guide/components/intents-common"
+   }
+  }
+ ]
+}
