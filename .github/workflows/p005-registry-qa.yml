@@ -1,0 +1,30 @@
+name: P0-005 registry QA
+on:
+  pull_request:
+  push:
+    branches:
+      - task/P0-005-qa-registry-ci
+      - main
+permissions:
+  contents: read
+jobs:
+  qa-registry:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout untrusted code without credentials
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check syntax
+        run: python -m compileall -q scripts
+      - name: Validate task registry
+        run: python scripts/validate_registry.py
+      - name: Run positive and negative tests
+        run: python -m unittest discover -s scripts/tests -p 'test_*.py' -v
+      - name: Validator also works in optimized mode
+        run: python -O scripts/validate_registry.py
