@@ -1,6 +1,6 @@
 # Phase Roadmap — Sequential Release Gates
-## Phase 0 — Program foundation (20-task pilot)
-Steps 1–20: see tasks/pilot.json. Exit only if role prompts, pinned baseline decision, engineering contracts, CI and measurable test plan are reviewed. No unverified code-generation volume targets.
+## Phase 0 — Program foundation (20 core pilot tasks + supplementary P0-021 boot safety task)
+Steps 1–20 are the original core pilot and determine the P0-020 program exit. Supplementary P0-021 is assigned to Chat 11 for offline boot/AVB/OTA metadata validation, without holding the existing core phase exit hostage. See tasks/pilot.json. Exit only if role prompts, pinned baseline decision, engineering contracts, CI and measurable test plan are reviewed. No unverified code-generation volume targets.
 ## Phase 1 — Slickk Experience on existing Android
 1. Define top user journeys.
 2. Prototype launcher and settings-facing UX.

@@ -7,9 +7,9 @@ root = Path(__file__).resolve().parents[1]
 data = json.loads((root / "tasks/pilot.json").read_text())
 tasks = data["tasks"]
 ids = [t["id"] for t in tasks]
-assert len(tasks) == 20, "Expected exactly 20 pilot tasks"
+assert len(tasks) >= 20, "Original 20 pilot tasks must remain registered"
 assert len(set(ids)) == len(ids), "Duplicate task IDs"
-assert ids == [f"P0-{n:03d}" for n in range(1,21)], "Missing/unsorted IDs"
+assert ids == [f"P0-{n:03d}" for n in range(1, len(tasks)+1)], "Missing/unsorted IDs"
 lookup = {t["id"]: t for t in tasks}
 for t in tasks:
     assert t["role"] in {f"{i:02d}" for i in range(13)}, t

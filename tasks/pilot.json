@@ -1,7 +1,7 @@
 {
   "project": "Slickk-OS",
-  "version": 1,
-  "notes": "All TODO; completion is evidence-gated, not conversation-gated",
+  "version": 2,
+  "notes": "20 original Phase 0 core tasks retained; P0-021 is an independently assigned supplementary Chat 11 safety-contract task and is not a prerequisite for core P0-020.",
   "tasks": [
     {
       "id": "P0-001",
@@ -415,6 +415,27 @@
         "Run available checks and capture logs",
         "Submit branch/PR, evidence and checkpoint",
         "Obtain review and close acceptance gates"
+      ]
+    },
+    {
+      "id": "P0-021",
+      "phase": 0,
+      "role": "11",
+      "title": "Build offline boot, verified-boot and OTA metadata safety contracts",
+      "depends_on": [
+        "P0-002",
+        "P0-006"
+      ],
+      "acceptance": "Executable non-destructive boot/AVB/OTA metadata validator, automated positive/negative tests, explicit signature-verification limits, rollback/recovery gates and draft PR evidence",
+      "state": "TODO",
+      "step": 1,
+      "steps": [
+        "Verify source baseline, security model, boundaries and existing interfaces",
+        "Specify boot, verified-boot and OTA metadata/safety contract schema",
+        "Implement read-only metadata validator and safe CLI",
+        "Run positive/negative synthetic fixture tests and repair failures",
+        "Document Cuttlefish-only testing path, recovery and rollback gates",
+        "Commit results to task branch, submit draft PR and record verification"
       ]
     }
   ]
