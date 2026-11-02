@@ -1,0 +1,21 @@
+name: Slickk-OS first boot sprint preflight tests
+on:
+  push:
+    branches: ["sprint/first-boot-2026-11-02"]
+  pull_request:
+    paths:
+      - "sprints/first_boot/**"
+      - ".github/workflows/first-boot-preflight.yml"
+permissions:
+  contents: read
+jobs:
+  preflight-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python parser and read-only host checks
+        run: python3 -m unittest discover -s sprints/first_boot -p 'test_*.py' -v
+      - name: Shell syntax
+        run: bash -n sprints/first_boot/build_aosp.sh
+      - name: Report actual runner host capability (not build)
+        run: python3 sprints/first_boot/preflight.py .
