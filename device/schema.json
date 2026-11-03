@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Slickk-OS read-only device feasibility record v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "synthetic", "device", "software", "evidence", "capabilities", "interfaces", "feasibility"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "synthetic": {"type": "boolean"},
+    "device": {
+      "type": "object", "additionalProperties": false,
+      "required": ["model", "model_status", "model_evidence"],
+      "properties": {
+        "model": {"type": "string", "minLength": 1, "maxLength": 80},
+        "model_status": {"enum": ["VERIFIED", "USER-REPORTED"]},
+        "model_evidence": {"type": "string", "minLength": 1}
+      }
+    },
+    "software": {
+      "type": "object", "additionalProperties": false,
+      "required": ["android_release", "api_level", "abi", "kernel_release", "evidence"],
+      "properties": {
+        "android_release": {"type": ["string", "null"], "maxLength": 32},
+        "api_level": {"type": ["integer", "null"], "minimum": 1, "maximum": 1000},
+        "abi": {"type": ["string", "null"], "maxLength": 80},
+        "kernel_release": {"type": ["string", "null"], "maxLength": 160},
+        "evidence": {"type": "object", "additionalProperties": {"type": "string"}}
+      }
+    },
+    "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+    "capabilities": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+    "interfaces": {"type": "array", "items": {"$ref": "#/$defs/interface"}},
+    "feasibility": {"type": "array", "items": {"$ref": "#/$defs/claim"}}
+  },
+  "$defs": {
+    "evidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "kind", "scope", "source", "detail"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 60},
+        "kind": {"enum": ["user_report", "device_observation", "device_test", "official_doc", "synthetic_test"]},
+        "scope": {"enum": ["exact_device", "generic"]},
+        "source": {"type": "string", "minLength": 1, "maxLength": 300},
+        "detail": {"type": "string", "minLength": 1, "maxLength": 300}
+      }
+    },
+    "claim": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "status", "interface", "evidence", "notes"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "status": {"enum": ["VERIFIED", "USER-REPORTED", "UNTESTED", "UNKNOWN", "NOT_SUPPORTED", "BLOCKED"]},
+        "interface": {"type": "string"},
+        "evidence": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "notes": {"type": "string"}
+      }
+    },
+    "interface": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "status", "evidence", "declared_hal_packages"],
+      "properties": {
+        "path": {"enum": ["/vendor/etc/vintf/manifest.xml", "/odm/etc/vintf/manifest.xml", "/system/etc/vintf/manifest.xml", "/vendor/etc/vintf/compatibility_matrix.xml"]},
+        "status": {"enum": ["UNKNOWN", "VERIFIED", "BLOCKED"]},
+        "evidence": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "declared_hal_packages": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^android\\.hardware\\.[A-Za-z0-9_.]+$"}}
+      }
+    }
+  }
+}
