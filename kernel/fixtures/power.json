@@ -1,0 +1,8 @@
+{
+  "dataset_kind": "synthetic",
+  "samples": [
+    {"t_s": 0, "battery_pct": 90, "charging": false, "wakeups": 1000, "suspend_s": 100},
+    {"t_s": 14400, "battery_pct": 87, "charging": false, "wakeups": 1500, "suspend_s": 13900},
+    {"t_s": 28800, "battery_pct": 84, "charging": false, "wakeups": 2000, "suspend_s": 27500}
+  ]
+}
