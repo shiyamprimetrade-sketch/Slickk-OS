@@ -1,0 +1,108 @@
+{
+  "label": "SYNTHETIC - mutation fixtures; not runtime evidence",
+  "cases": [
+    {
+      "name": "duplicate_component",
+      "path": "components.1.id",
+      "value": "system_server",
+      "expect": "duplicate component id"
+    },
+    {
+      "name": "unsupported_api",
+      "path": "components.1.api.max",
+      "value": 38,
+      "expect": "unsupported API"
+    },
+    {
+      "name": "bool_api",
+      "path": "components.1.api.min",
+      "value": true,
+      "expect": "unsupported API"
+    },
+    {
+      "name": "unverified_pin",
+      "path": "components.1.source.commit",
+      "value": "0000000000000000000000000000000000000000",
+      "expect": "source pin mismatch"
+    },
+    {
+      "name": "missing_source",
+      "path": "components.2.source",
+      "remove": true,
+      "expect": "missing source"
+    },
+    {
+      "name": "descriptor_conflict",
+      "path": "components.2.interfaces.0.descriptor",
+      "value": "android.app.IActivityManager",
+      "expect": "conflicting Binder descriptor"
+    },
+    {
+      "name": "permission_unspecified",
+      "path": "components.2.permissions.reason",
+      "value": "",
+      "expect": "unknown permission policy needs reason"
+    },
+    {
+      "name": "invalid_guard",
+      "path": "components.2.interfaces.0.permission",
+      "value": "guarded",
+      "expect": "requires documented guard"
+    },
+    {
+      "name": "missing_descriptor",
+      "path": "components.2.interfaces.0.descriptor",
+      "value": null,
+      "extra": {
+        "components.2.interfaces.0.status": "verified"
+      },
+      "expect": "verified AIDL needs descriptor"
+    },
+    {
+      "name": "dependency_missing",
+      "path": "components.2.dependencies.0",
+      "value": "does_not_exist",
+      "expect": "unknown dependency"
+    },
+    {
+      "name": "cycle",
+      "path": "components.0.dependencies",
+      "value": [
+        "activity_manager"
+      ],
+      "expect": "dependency cycle"
+    },
+    {
+      "name": "destroyed_resumes",
+      "path": "components.9.lifecycle.transitions.0",
+      "value": [
+        "DESTROYED",
+        "RESUMED"
+      ],
+      "expect": "illegal lifecycle edge"
+    },
+    {
+      "name": "unreachable_state",
+      "path": "components.9.lifecycle.transitions",
+      "value": [
+        [
+          "CREATED",
+          "STARTED"
+        ]
+      ],
+      "expect": "unreachable lifecycle state"
+    },
+    {
+      "name": "unapproved_assumption",
+      "path": "assumptions.0.status",
+      "value": "guessed",
+      "expect": "unsupported assumption status"
+    },
+    {
+      "name": "missing_tests",
+      "path": "components.1.verification",
+      "value": [],
+      "expect": "verification methods required"
+    }
+  ]
+}
