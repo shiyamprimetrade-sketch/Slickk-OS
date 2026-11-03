@@ -1,0 +1,71 @@
+{
+  "comparison_count": 2,
+  "comparisons": [
+    {
+      "aggregation": "p95",
+      "android": {
+        "cv_pct": 5.246883671684697,
+        "max": 125.0,
+        "mean": 116.4,
+        "median": 115.0,
+        "min": 110.0,
+        "n": 5,
+        "p95": 124.0,
+        "stdev": 6.107372593840988
+      },
+      "claim_allowed": false,
+      "evidence_class": "SYNTHETIC_ONLY",
+      "metric": "startup_cold_ms",
+      "reasons": [],
+      "relative_improvement_pct": 29.51612903225806,
+      "slickk_os": {
+        "cv_pct": 5.222644519429869,
+        "max": 88.0,
+        "mean": 82.8,
+        "median": 84.0,
+        "min": 77.0,
+        "n": 5,
+        "p95": 87.4,
+        "stdev": 4.324349662087931
+      },
+      "status": "IMPROVEMENT_CANDIDATE",
+      "target_improvement_pct": 20,
+      "unit": "ms",
+      "workload": "camera_cold_launch"
+    },
+    {
+      "aggregation": "median",
+      "android": {
+        "cv_pct": 9.09090909090909,
+        "max": 1.2,
+        "mean": 1.0999999999999999,
+        "median": 1.1,
+        "min": 1.0,
+        "n": 3,
+        "p95": 1.19,
+        "stdev": 0.09999999999999998
+      },
+      "claim_allowed": false,
+      "evidence_class": "SYNTHETIC_ONLY",
+      "metric": "idle_drain_pct_per_hour",
+      "reasons": [],
+      "relative_improvement_pct": 27.272727272727273,
+      "slickk_os": {
+        "cv_pct": 9.750161053097534,
+        "max": 0.85,
+        "mean": 0.7833333333333333,
+        "median": 0.8,
+        "min": 0.7,
+        "n": 3,
+        "p95": 0.845,
+        "stdev": 0.07637626158259735
+      },
+      "status": "IMPROVEMENT_CANDIDATE",
+      "target_improvement_pct": 15,
+      "unit": "percent/hour",
+      "workload": "eight_hour_idle"
+    }
+  ],
+  "measurement_claim": "NONE; processor does not certify real-device provenance",
+  "schema_version": "1.0"
+}

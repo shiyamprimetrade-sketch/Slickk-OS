@@ -1,0 +1,36 @@
+name: P0-007 benchmark processor
+on:
+  pull_request:
+    paths:
+      - 'benchmarks/**'
+      - 'tests/test_benchmarks.py'
+      - '.github/workflows/benchmark-protocol.yml'
+  push:
+    branches: ['task/P0-007-benchmark-protocol']
+    paths:
+      - 'benchmarks/**'
+      - 'tests/test_benchmarks.py'
+      - '.github/workflows/benchmark-protocol.yml'
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run standard-library tests
+        run: python3 -m unittest discover -s tests -p 'test_benchmarks.py' -v
+      - name: Verify synthetic report reproducibility
+        run: |
+          python3 benchmarks/analyze.py benchmarks/fixtures/synthetic_comparison.json --output /tmp/p0-007.json
+          diff -u benchmarks/reports/synthetic_summary.json /tmp/p0-007.json
+      - name: Verify synthetic regression gate
+        run: |
+          set +e
+          python3 benchmarks/analyze.py benchmarks/fixtures/synthetic_regression.csv --fail-on-regression >/tmp/synthetic-regression.json
+          code=$?
+          test "$code" -eq 3
