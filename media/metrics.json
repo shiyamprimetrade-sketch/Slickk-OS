@@ -1,0 +1,26 @@
+{
+  "version": "P0-017/1.0",
+  "metrics": {
+    "frame_time_ms": {"subsystem": "graphics", "unit": "ms", "better": "lower", "aggregate": "p95", "min_runs": 5},
+    "frame_jank_pct": {"subsystem": "graphics", "unit": "percent", "better": "lower", "aggregate": "median", "min_runs": 5, "max": 100},
+    "frame_drop_pct": {"subsystem": "graphics", "unit": "percent", "better": "lower", "aggregate": "median", "min_runs": 5, "max": 100},
+    "render_latency_ms": {"subsystem": "graphics", "unit": "ms", "better": "lower", "aggregate": "p95", "min_runs": 5},
+    "video_decode_fps": {"subsystem": "video", "unit": "fps", "better": "higher", "aggregate": "median", "min_runs": 5},
+    "video_encode_fps": {"subsystem": "video", "unit": "fps", "better": "higher", "aggregate": "median", "min_runs": 5},
+    "video_drop_pct": {"subsystem": "video", "unit": "percent", "better": "lower", "aggregate": "median", "min_runs": 5, "max": 100},
+    "video_first_frame_ms": {"subsystem": "video", "unit": "ms", "better": "lower", "aggregate": "p95", "min_runs": 5},
+    "video_psnr_db": {"subsystem": "video", "unit": "dB", "better": "higher", "aggregate": "median", "min_runs": 5},
+    "av_sync_error_ms": {"subsystem": "video", "unit": "ms", "better": "lower", "aggregate": "p95", "min_runs": 5},
+    "audio_latency_ms": {"subsystem": "audio", "unit": "ms", "better": "lower", "aggregate": "p95", "min_runs": 5},
+    "audio_underrun_count": {"subsystem": "audio", "unit": "count", "better": "lower", "aggregate": "p95", "min_runs": 5, "integer": true},
+    "audio_dropout_pct": {"subsystem": "audio", "unit": "percent", "better": "lower", "aggregate": "median", "min_runs": 5, "max": 100},
+    "dns_lookup_ms": {"subsystem": "network", "unit": "ms", "better": "lower", "aggregate": "p95", "min_runs": 5},
+    "tcp_connect_ms": {"subsystem": "network", "unit": "ms", "better": "lower", "aggregate": "p95", "min_runs": 5},
+    "network_throughput_mbps": {"subsystem": "network", "unit": "Mbit/s", "better": "higher", "aggregate": "median", "min_runs": 5},
+    "network_rtt_ms": {"subsystem": "network", "unit": "ms", "better": "lower", "aggregate": "p95", "min_runs": 5},
+    "network_jitter_ms": {"subsystem": "network", "unit": "ms", "better": "lower", "aggregate": "p95", "min_runs": 5},
+    "packet_loss_pct": {"subsystem": "network", "unit": "percent", "better": "lower", "aggregate": "median", "min_runs": 5, "max": 100},
+    "network_recovery_ms": {"subsystem": "network", "unit": "ms", "better": "lower", "aggregate": "p95", "min_runs": 5},
+    "energy_mwh": {"subsystem": "shared", "unit": "mWh", "better": "lower", "aggregate": "median", "min_runs": 5}
+  }
+}
