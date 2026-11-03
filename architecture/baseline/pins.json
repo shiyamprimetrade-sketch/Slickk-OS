@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "decision": "P0-002",
+  "upstream": "https://android.googlesource.com",
+  "android_release": "17",
+  "api_level": 37,
+  "tag": "android-17.0.0_r1",
+  "build_id": "CP2A.260605.016",
+  "tagged_security_patch": "2026-06-05",
+  "release_status": "development-source-baseline-not-production-security-current",
+  "manifest": {
+    "repository": "platform/manifest",
+    "tag_object": "7a9e46ba6ed424f922a3457f4964e67e0b966201",
+    "commit": "5bc9a7ce1cd78dd53613bbfd0ebf506e1e4adb0f",
+    "default_xml_blob": "f8c6b343b51c94693108dcefb6bc41f51ae24791"
+  },
+  "projects": [
+    {"path": "art", "repository": "platform/art", "tag_object": "fc31298bb626c4b5d53ae3b715c42a2daa802c08", "commit": "b753cf97923c3695338d21466fa14c57b480a59a"},
+    {"path": "frameworks/base", "repository": "platform/frameworks/base", "tag_object": "23149ba144e850fe494a91ffa13f8019455c0804", "commit": "94b4c163b7dfe5ce3607f7bb8456f9573f7de57d"},
+    {"path": "build/make", "repository": "platform/build", "tag_object": "2868938810740549bb85d727e0a5084e0210fcfa", "commit": "5ce6f787337d0223710bf7d4a16dbe6d2a35f777"},
+    {"path": "system/core", "repository": "platform/system/core", "tag_object": "f1f2be8ce0571547f72f2565a7c90001fa189ad0", "commit": "545d2487e38192a2ce25040897ced877cf6b4f53"},
+    {"path": "device/google/cuttlefish", "repository": "device/google/cuttlefish", "tag_object": "fc81d4d790cf71b00c17dbcb476c9cf05279f3ff", "commit": "283645aacf6cdb56cc31a9362f54d412dbc132a1"}
+  ]
+}
