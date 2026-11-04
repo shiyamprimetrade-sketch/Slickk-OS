@@ -1,0 +1,21 @@
+name: Build Slickk Home Android APK
+on:
+  push:
+    branches: [experiment/github-actions-cuttlefish-boot]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build-apk:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and sign development APK
+        shell: bash
+        run: bash experiments/slickk-home/build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SlickkHome-debug-APK
+          path: experiments/slickk-home/dist/SlickkHome-debug.apk
+          retention-days: 7
