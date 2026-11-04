@@ -48,15 +48,21 @@ jobs:
         run: python3 -m unittest discover -s experiments/developer-preview -v
       - name: Build product image and AVB metadata
         run: bash experiments/developer-preview/build.sh
-      - name: Launch AOSP and prove actual boot
+      - uses: actions/upload-artifact@v4
+        with:
+          name: slickk-dp01-built-images
+          path: evidence/
+          retention-days: 14
+      - name: Launch custom image and prove actual boot
+        timeout-minutes: 12
         shell: bash
         run: |
           set -Eeuo pipefail
           sudo chmod 0666 /dev/kvm
-          sg kvm -c "sg cvdnetwork -c 'HOME=$HOME/cf $HOME/cf/bin/launch_cvd \
+          timeout -k 20 180 sg kvm -c "sg cvdnetwork -c 'HOME=$HOME/cf $HOME/cf/bin/launch_cvd \
             -daemon -memory_mb=4096 -cpus=2 -gpu_mode=guest_swiftshader \
             -report_anonymous_usage_stats=n'"
-          adb wait-for-device
+          timeout 180 adb wait-for-device
           timeout 600 bash -c 'until [ "$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d "\r")" = "1" ]; do sleep 5; done'
           echo "VIRTUAL_AOSP_BOOT=VERIFIED"
           printf 'sys.boot_completed=%s\nfingerprint=%s\nandroid=%s\n' \
@@ -69,6 +75,7 @@ jobs:
           adb logcat -d -t 600 > evidence/logcat-tail.txt || true
 
       - name: Verify built-in Slickk Home through reboot
+        timeout-minutes: 10
         run: bash experiments/developer-preview/verify-boot.sh
       - name: Preserve evidence even if boot fails
         if: always()
@@ -79,6 +86,11 @@ jobs:
             "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" "$GITHUB_SHA" > evidence/runner.txt
           df -h . >> evidence/runner.txt
           free -h >> evidence/runner.txt
+          find "$HOME/cf" -type f \( -name '*log' -o -name '*log.txt' \) -size -20M -print0 | while IFS= read -r -d '' f; do
+            dest="evidence/host-logs/${f#"$HOME/cf/"}"
+            mkdir -p "$(dirname "$dest")"
+            cp "$f" "$dest"
+          done
 
       - uses: actions/upload-artifact@v4
         if: always()
