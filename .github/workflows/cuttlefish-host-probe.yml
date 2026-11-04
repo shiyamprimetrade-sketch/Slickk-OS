@@ -1,0 +1,58 @@
+name: KVM + official Cuttlefish artifact availability
+on:
+  push:
+    branches: [experiment/github-actions-cuttlefish-boot]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect-host:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Show host and enable KVM access
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          uname -a
+          nproc
+          free -h
+          df -h .
+          stat /dev/kvm || true
+          if [[ -c /dev/kvm ]]; then
+            echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+            sudo udevadm control --reload-rules
+            sudo udevadm trigger --name-match=kvm
+          fi
+          if [[ ! -r /dev/kvm || ! -w /dev/kvm ]]; then
+            echo "::error::KVM inaccessible on this GitHub Actions runner"
+            exit 2
+          fi
+          echo "KVM_ACCESSIBLE=YES"
+          grep -E '^(MemTotal|MemAvailable):' /proc/meminfo
+      - name: Probe official Android CI build index (no large download)
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          curl --fail --location --retry 2 --max-time 45 \
+            https://ci.android.com/builds/branches/aosp-android-latest-release/status.json -o /tmp/ci-status.json
+          echo "Android CI response size: $(wc -c < /tmp/ci-status.json) bytes"
+          target=aosp_cf_x86_64_only_phone-userdebug
+          build_id="$(jq -r --arg target "$target" '.targets[] | select(.name == $target) | .last_known_good_build' /tmp/ci-status.json | head -1)"
+          if [[ -z "$build_id" || "$build_id" == "null" || ! "$build_id" =~ ^[0-9]+$ ]]; then
+            echo "::error::No public latest known-good Cuttlefish artifact build ID for $target"
+            exit 3
+          fi
+          echo "OFFICIAL_CUTTLEFISH_BUILD_ID=$build_id"
+          echo "BUILD_ID=$build_id" >> "$GITHUB_ENV"
+          base="https://ci.android.com/builds/submitted/$build_id/$target/latest/raw"
+          for artifact in "cvd-host_package.tar.gz" "aosp_cf_x86_64_only_phone-img-$build_id.zip"; do
+            code="$(curl --location --silent --output /dev/null --write-out '%{http_code}' --max-time 45 --range 0-1023 "$base/$artifact")"
+            echo "artifact=$artifact status=$code"
+            if [[ "$code" != "200" && "$code" != "206" ]]; then
+              echo "::error::Official artifact not reachable ($code): $artifact"
+              exit 4
+            fi
+          done
+          echo "ARTIFACTS_ACCESSIBLE=YES"
