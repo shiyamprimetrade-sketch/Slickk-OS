@@ -5,8 +5,35 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: write
 jobs:
+  recover-evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Stop superseded unbounded attempt
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST repos/${{ github.repository }}/actions/runs/41846746520/cancel || true
+      - uses: actions/download-artifact@v4
+        with:
+          name: official-cuttlefish-evidence
+          run-id: 41848785937
+          github-token: ${{ github.token }}
+          path: recovered
+      - name: Print real failure and hashes
+        run: |
+          cat recovered/boot-inputs.sha256 recovered/overlay.sha256
+          find recovered/host-logs -type f -exec sh -c 'echo "$1"; tail -100 "$1"' sh {} \;
+      - uses: actions/upload-artifact@v4
+        with:
+          name: slickk-dp01-diagnostics-small
+          path: |
+            recovered/**
+            !recovered/*.tar.gz
+          retention-days: 14
   boot-aosp:
+    if: ${{ false }}
     runs-on: ubuntu-24.04
     timeout-minutes: 55
     env:
