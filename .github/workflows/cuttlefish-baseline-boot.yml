@@ -1,0 +1,121 @@
+name: Boot official AOSP Cuttlefish on hosted KVM
+on:
+  push:
+    branches: [experiment/github-actions-cuttlefish-boot]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  boot-aosp:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    env:
+      ANDROID_BRANCH: aosp-android-latest-release
+      ANDROID_TARGET: aosp_cf_x86_64_only_phone
+      CF_VERSION: v1.32.0
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Enable ephemeral KVM access
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test -c /dev/kvm
+          sudo chmod 0666 /dev/kvm
+          test -r /dev/kvm && test -w /dev/kvm
+          echo "HOST_KVM_READY=YES"
+          free -h
+          df -h .
+
+      - name: Install Google Cuttlefish base package
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$HOME/cf-pkgs" "$GITHUB_WORKSPACE/boot-evidence"
+          cd "$HOME/cf-pkgs"
+          RUN_ID="$(gh run list --repo google/android-cuttlefish --workflow .github/workflows/main.yml --limit 100 \
+            --json databaseId,headBranch,status,conclusion \
+            --jq ".[] | select(.headBranch == \"$CF_VERSION\" and .status == \"completed\" and .conclusion == \"success\") | .databaseId" | head -1)"
+          if [[ ! "$RUN_ID" =~ ^[0-9]+$ ]]; then
+            echo "::error::No successful Google Cuttlefish workflow artifact for version $CF_VERSION"
+            exit 10
+          fi
+          echo "GOOGLE_CF_PACKAGE_RUN=$RUN_ID" | tee "$GITHUB_WORKSPACE/boot-evidence/packages.txt"
+          gh run download "$RUN_ID" --repo google/android-cuttlefish --name debs_amd64 --dir .
+          tar -xf debs_amd64.tar
+          sudo apt-get update -qq
+          sudo dpkg -i cuttlefish-base_*_*64.deb || sudo apt-get install -f -y
+          sudo usermod -aG kvm,cvdnetwork,render "$USER"
+          echo "HOST_CUTTLEFISH_READY=YES"
+
+      - name: Download matched official image and Cuttlefish binaries
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$HOME/cf"
+          index="$(mktemp)"
+          curl --fail --location --retry 3 --max-time 60 \
+            "https://ci.android.com/builds/branches/$ANDROID_BRANCH/status.json" -o "$index"
+          target="$ANDROID_TARGET-userdebug"
+          build_id="$(jq -r --arg target "$target" '.targets[] | select(.name == $target) | .last_known_good_build' "$index" | head -1)"
+          if [[ ! "$build_id" =~ ^[0-9]+$ ]]; then
+            echo "::error::No latest known-good official Cuttlefish image"
+            exit 11
+          fi
+          printf 'BRANCH=%s\nBUILD_ID=%s\nTARGET=%s\n' "$ANDROID_BRANCH" "$build_id" "$target" | tee boot-evidence/source.txt
+          base="https://ci.android.com/builds/submitted/$build_id/$target/latest/raw"
+          curl --fail --location --retry 3 --output /tmp/aosp-img.zip \
+            "$base/$ANDROID_TARGET-img-$build_id.zip"
+          curl --fail --location --retry 3 --output /tmp/cvd-host.tar.gz \
+            "$base/cvd-host_package.tar.gz"
+          sha256sum /tmp/aosp-img.zip /tmp/cvd-host.tar.gz | tee boot-evidence/archives-sha256.txt
+          unzip -q /tmp/aosp-img.zip -d "$HOME/cf"
+          tar -xzf /tmp/cvd-host.tar.gz -C "$HOME/cf"
+          test -s "$HOME/cf/boot.img"
+          test -x "$HOME/cf/bin/launch_cvd"
+          echo "$ANDROID_HOME/platform-tools" >> "$GITHUB_PATH"
+          echo "MATCHED_AOSP_ARTIFACTS_READY=YES"
+
+      - name: Launch AOSP and prove actual boot
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          sudo chmod 0666 /dev/kvm
+          sg kvm -c "sg cvdnetwork -c 'HOME=$HOME/cf $HOME/cf/bin/launch_cvd \
+            -daemon -memory_mb=4096 -cpus=2 -gpu_mode=guest_swiftshader \
+            -enable_sandbox=false -report_anonymous_usage_stats=n'"
+          adb wait-for-device
+          timeout 600 bash -c 'until [ "$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d "\r")" = "1" ]; do sleep 5; done'
+          echo "VIRTUAL_AOSP_BOOT=VERIFIED"
+          printf 'sys.boot_completed=%s\nfingerprint=%s\nandroid=%s\n' \
+            "$(adb shell getprop sys.boot_completed | tr -d '\r')" \
+            "$(adb shell getprop ro.build.fingerprint | tr -d '\r')" \
+            "$(adb shell getprop ro.build.version.release | tr -d '\r')" | tee boot-evidence/boot-proof.txt
+          echo "CLASSIFICATION=OFFICIAL_STOCK_AOSP_NOT_SLICKK_CUSTOM_OS" >> boot-evidence/boot-proof.txt
+          adb devices -l | tee boot-evidence/adb.txt
+          adb exec-out screencap -p > boot-evidence/screenshot.png || true
+          adb logcat -d -t 600 > boot-evidence/logcat-tail.txt || true
+
+      - name: Preserve evidence even if boot fails
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p boot-evidence
+          printf 'run=https://github.com/%s/actions/runs/%s\ncommit=%s\n' \
+            "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" "$GITHUB_SHA" > boot-evidence/runner.txt
+          df -h . >> boot-evidence/runner.txt
+          free -h >> boot-evidence/runner.txt
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: official-cuttlefish-boot-evidence
+          path: boot-evidence/
+          retention-days: 7
+      - name: Stop virtual device
+        if: always()
+        shell: bash
+        run: |
+          if [[ -x "$HOME/cf/bin/stop_cvd" ]]; then
+            sg kvm -c "sg cvdnetwork -c 'HOME=$HOME/cf $HOME/cf/bin/stop_cvd'" || true
+          fi
