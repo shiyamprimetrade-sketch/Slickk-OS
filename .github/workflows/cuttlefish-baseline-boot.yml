@@ -92,6 +92,32 @@ jobs:
           adb exec-out screencap -p > boot-evidence/screenshot.png || true
           adb logcat -d -t 600 > boot-evidence/logcat-tail.txt || true
 
+      - name: Install Slickk Home and verify persistence after guest reboot
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          bash experiments/slickk-home/build.sh | tee boot-evidence/slickk-apk-build.txt
+          apk=experiments/slickk-home/dist/SlickkHome-debug.apk
+          test -s "$apk"
+          adb install -r "$apk" | tee boot-evidence/slickk-install.txt
+          adb shell cmd package set-home-activity online.slickk.os/.HomeActivity
+          adb shell am start -n online.slickk.os/.HomeActivity
+          sleep 3
+          adb shell cmd package resolve-activity --brief -a android.intent.action.MAIN \
+            -c android.intent.category.HOME | tee boot-evidence/slickk-home-before.txt
+          adb exec-out screencap -p > boot-evidence/slickk-home-screen.png
+          adb reboot
+          timeout 180 adb wait-for-device
+          timeout 300 bash -c 'until [ "$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d "\r")" = "1" ]; do sleep 5; done'
+          adb shell cmd package resolve-activity --brief -a android.intent.action.MAIN \
+            -c android.intent.category.HOME | tee boot-evidence/slickk-home-after.txt
+          grep -q 'online.slickk.os' boot-evidence/slickk-home-after.txt
+          adb shell pm path online.slickk.os | tee boot-evidence/slickk-app-location.txt
+          adb shell am start -n online.slickk.os/.HomeActivity
+          echo "SLICKK_HOME_SURVIVED_REBOOT=VERIFIED" | tee boot-evidence/slickk-proof.txt
+          echo "CLASSIFICATION=AOSP_WITH_INSTALLED_SLICKK_HOME_NOT_CUSTOM_SYSTEM_IMAGE" >> boot-evidence/slickk-proof.txt
+          cp "$apk" boot-evidence/SlickkHome-debug.apk
+
       - name: Preserve evidence even if boot fails
         if: always()
         shell: bash
