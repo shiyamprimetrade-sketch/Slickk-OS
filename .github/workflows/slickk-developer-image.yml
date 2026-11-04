@@ -1,0 +1,33 @@
+name: Slickk developer image prerequisites
+on:
+  push:
+    branches: [integration/slickk-dp01]
+permissions:
+  contents: read
+jobs:
+  image-tools:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect pinned official target-files and tools
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p evidence
+          base=https://ci.android.com/builds/submitted/16644040/aosp_cf_x86_64_only_phone-userdebug/latest/raw
+          for artifact in aosp_cf_x86_64_only_phone-target_files-16644040.zip otatools.zip; do
+            curl --fail --location --retry 2 "$base/$artifact" -o "/tmp/$artifact"
+            sha256sum "/tmp/$artifact" | tee -a evidence/archive-sha256.txt
+            unzip -l "/tmp/$artifact" > "evidence/$artifact.list.txt"
+          done
+          unzip -p /tmp/aosp_cf_x86_64_only_phone-target_files-16644040.zip META/misc_info.txt | tee evidence/misc_info.txt
+          unzip -p /tmp/aosp_cf_x86_64_only_phone-target_files-16644040.zip META/dynamic_partitions_info.txt | tee evidence/dynamic_partitions_info.txt
+          unzip -p /tmp/aosp_cf_x86_64_only_phone-target_files-16644040.zip META/filesystem_config.txt | head -40 || true
+          df -h .
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: slickk-image-prerequisites
+          path: evidence/
+          retention-days: 14
