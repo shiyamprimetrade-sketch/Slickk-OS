@@ -27,25 +27,21 @@ jobs:
           free -h
           df -h .
 
-      - name: Install Google Cuttlefish base package
+      - name: Install Cuttlefish base from official Google APT repository
         shell: bash
         run: |
           set -Eeuo pipefail
-          mkdir -p "$HOME/cf-pkgs" "$GITHUB_WORKSPACE/boot-evidence"
-          cd "$HOME/cf-pkgs"
-          RUN_ID="$(gh run list --repo google/android-cuttlefish --workflow .github/workflows/main.yml --limit 100 \
-            --json databaseId,headBranch,status,conclusion \
-            --jq ".[] | select(.headBranch == \"$CF_VERSION\" and .status == \"completed\" and .conclusion == \"success\") | .databaseId" | head -1)"
-          if [[ ! "$RUN_ID" =~ ^[0-9]+$ ]]; then
-            echo "::error::No successful Google Cuttlefish workflow artifact for version $CF_VERSION"
-            exit 10
-          fi
-          echo "GOOGLE_CF_PACKAGE_RUN=$RUN_ID" | tee "$GITHUB_WORKSPACE/boot-evidence/packages.txt"
-          gh run download "$RUN_ID" --repo google/android-cuttlefish --name debs_amd64 --dir .
-          tar -xf debs_amd64.tar
+          mkdir -p "$GITHUB_WORKSPACE/boot-evidence"
+          sudo curl --fail --silent --show-error --location \
+            https://us-apt.pkg.dev/doc/repo-signing-key.gpg \
+            -o /etc/apt/trusted.gpg.d/artifact-registry.asc
+          sudo chmod a+r /etc/apt/trusted.gpg.d/artifact-registry.asc
+          echo 'deb https://us-apt.pkg.dev/projects/android-cuttlefish-artifacts android-cuttlefish main' \
+            | sudo tee /etc/apt/sources.list.d/artifact-registry.list
           sudo apt-get update -qq
-          sudo dpkg -i cuttlefish-base_*_*64.deb || sudo apt-get install -f -y
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y cuttlefish-base
           sudo usermod -aG kvm,cvdnetwork,render "$USER"
+          dpkg-query --show cuttlefish-base | tee boot-evidence/packages.txt
           echo "HOST_CUTTLEFISH_READY=YES"
 
       - name: Download matched official image and Cuttlefish binaries
