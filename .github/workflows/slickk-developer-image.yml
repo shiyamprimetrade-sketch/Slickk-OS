@@ -1,33 +1,96 @@
-name: Slickk developer image prerequisites
+name: Slickk Developer Preview image and boot
 on:
   push:
     branches: [integration/slickk-dp01]
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  image-tools:
+  boot-aosp:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 55
+    env:
+      ANDROID_BRANCH: aosp-android-latest-release
+      ANDROID_TARGET: aosp_cf_x86_64_only_phone
+      CF_VERSION: v1.32.0
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
-      - name: Inspect pinned official target-files and tools
+      - name: Enable ephemeral KVM access
         shell: bash
         run: |
           set -Eeuo pipefail
-          mkdir -p evidence
-          base=https://ci.android.com/builds/submitted/16644040/aosp_cf_x86_64_only_phone-userdebug/latest/raw
-          for artifact in aosp_cf_x86_64_only_phone-target_files-16644040.zip otatools.zip; do
-            curl --fail --location --retry 2 "$base/$artifact" -o "/tmp/$artifact"
-            sha256sum "/tmp/$artifact" | tee -a evidence/archive-sha256.txt
-            unzip -l "/tmp/$artifact" > "evidence/$artifact.list.txt"
-          done
-          unzip -p /tmp/aosp_cf_x86_64_only_phone-target_files-16644040.zip META/misc_info.txt | tee evidence/misc_info.txt
-          unzip -p /tmp/aosp_cf_x86_64_only_phone-target_files-16644040.zip META/dynamic_partitions_info.txt | tee evidence/dynamic_partitions_info.txt
-          unzip -p /tmp/aosp_cf_x86_64_only_phone-target_files-16644040.zip META/filesystem_config.txt | head -40 || true
+          test -c /dev/kvm
+          sudo chmod 0666 /dev/kvm
+          test -r /dev/kvm && test -w /dev/kvm
+          echo "HOST_KVM_READY=YES"
+          free -h
           df -h .
+
+      - name: Install Cuttlefish base from official Google APT repository
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$GITHUB_WORKSPACE/evidence"
+          sudo curl --fail --silent --show-error --location \
+            https://us-apt.pkg.dev/doc/repo-signing-key.gpg \
+            -o /etc/apt/trusted.gpg.d/artifact-registry.asc
+          sudo chmod a+r /etc/apt/trusted.gpg.d/artifact-registry.asc
+          echo 'deb https://us-apt.pkg.dev/projects/android-cuttlefish-artifacts android-cuttlefish main' \
+            | sudo tee /etc/apt/sources.list.d/artifact-registry.list
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y cuttlefish-base
+          sudo usermod -aG kvm,cvdnetwork,render "$USER"
+          dpkg-query --show cuttlefish-base | tee evidence/packages.txt
+          echo "HOST_CUTTLEFISH_READY=YES"
+
+      - name: Test image customization contracts
+        run: python3 -m unittest discover -s experiments/developer-preview -v
+      - name: Build product image and AVB metadata
+        run: bash experiments/developer-preview/build.sh
+      - name: Launch AOSP and prove actual boot
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          sudo chmod 0666 /dev/kvm
+          sg kvm -c "sg cvdnetwork -c 'HOME=$HOME/cf $HOME/cf/bin/launch_cvd \
+            -daemon -memory_mb=4096 -cpus=2 -gpu_mode=guest_swiftshader \
+            -report_anonymous_usage_stats=n'"
+          adb wait-for-device
+          timeout 600 bash -c 'until [ "$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d "\r")" = "1" ]; do sleep 5; done'
+          echo "VIRTUAL_AOSP_BOOT=VERIFIED"
+          printf 'sys.boot_completed=%s\nfingerprint=%s\nandroid=%s\n' \
+            "$(adb shell getprop sys.boot_completed | tr -d '\r')" \
+            "$(adb shell getprop ro.build.fingerprint | tr -d '\r')" \
+            "$(adb shell getprop ro.build.version.release | tr -d '\r')" | tee evidence/boot-proof.txt
+          echo "CLASSIFICATION=CUSTOM_IMAGE_BOOT_PENDING_VALIDATION" >> evidence/boot-proof.txt
+          adb devices -l | tee evidence/adb.txt
+          adb exec-out screencap -p > evidence/screenshot.png || true
+          adb logcat -d -t 600 > evidence/logcat-tail.txt || true
+
+      - name: Verify built-in Slickk Home through reboot
+        run: bash experiments/developer-preview/verify-boot.sh
+      - name: Preserve evidence even if boot fails
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p evidence
+          printf 'run=https://github.com/%s/actions/runs/%s\ncommit=%s\n' \
+            "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" "$GITHUB_SHA" > evidence/runner.txt
+          df -h . >> evidence/runner.txt
+          free -h >> evidence/runner.txt
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: slickk-image-prerequisites
+          name: official-cuttlefish-evidence
           path: evidence/
           retention-days: 14
+      - name: Stop virtual device
+        if: always()
+        shell: bash
+        run: |
+          if [[ -x "$HOME/cf/bin/stop_cvd" ]]; then
+            sg kvm -c "sg cvdnetwork -c 'HOME=$HOME/cf $HOME/cf/bin/stop_cvd'" || true
+          fi
+
