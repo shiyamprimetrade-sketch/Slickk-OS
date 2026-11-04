@@ -101,6 +101,8 @@ jobs:
           test -s "$apk"
           adb install -r "$apk" | tee boot-evidence/slickk-install.txt
           adb shell cmd package set-home-activity online.slickk.os/.HomeActivity
+          adb shell cmd role add-role-holder --user 0 android.app.role.HOME online.slickk.os
+          adb shell cmd role get-role-holders --user 0 android.app.role.HOME | tee boot-evidence/slickk-home-role-before.txt
           adb shell am start -n online.slickk.os/.HomeActivity
           sleep 3
           adb shell cmd package resolve-activity --brief -a android.intent.action.MAIN \
@@ -109,6 +111,10 @@ jobs:
           adb reboot
           timeout 180 adb wait-for-device
           timeout 300 bash -c 'until [ "$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d "\r")" = "1" ]; do sleep 5; done'
+          sleep 15
+          adb shell cmd role get-role-holders --user 0 android.app.role.HOME | tee boot-evidence/slickk-home-role-after.txt
+          adb shell pm path online.slickk.os | tee boot-evidence/slickk-app-location.txt
+          grep -q online.slickk.os boot-evidence/slickk-app-location.txt
           adb shell cmd package resolve-activity --brief -a android.intent.action.MAIN \
             -c android.intent.category.HOME | tee boot-evidence/slickk-home-after.txt
           grep -q 'online.slickk.os' boot-evidence/slickk-home-after.txt
