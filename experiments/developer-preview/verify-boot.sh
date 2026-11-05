@@ -43,6 +43,10 @@ sleep 3
 adb shell dumpsys activity activities > evidence/settings-launch.txt
 grep -E '(mResumedActivity|topResumedActivity).*com.android.settings' evidence/settings-launch.txt
 adb shell input keyevent KEYCODE_HOME
+sleep 3
+adb shell uiautomator dump /sdcard/home.xml
+adb pull /sdcard/home.xml evidence/home-before.xml
+grep -q 'text="Slickk OS"' evidence/home-before.xml
 adb exec-out screencap -p > evidence/slickk-system-home.png
 adb reboot
 timeout 180 adb wait-for-device
@@ -57,6 +61,11 @@ adb shell cmd package resolve-activity --brief -a android.intent.action.MAIN -c 
 grep -F 'online.slickk.os/.HomeActivity' evidence/home-resolve-after.txt
 adb shell am start -W -n online.slickk.os/.HomeActivity | tee evidence/home-after-start.txt
 grep -q 'Status: ok' evidence/home-after-start.txt
+sleep 3
+adb shell uiautomator dump /sdcard/home.xml
+adb pull /sdcard/home.xml evidence/home-after.xml
+grep -q 'text="Slickk OS"' evidence/home-after.xml
+adb exec-out screencap -p > evidence/slickk-system-home-after.png
 adb logcat -d > evidence/custom-logcat.txt
 adb shell getprop > evidence/custom-properties.txt
 echo 'CUSTOM_PRODUCT_IMAGE_AND_REBOOT=VERIFIED' | tee evidence/custom-result.txt
