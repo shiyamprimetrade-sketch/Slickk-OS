@@ -3,37 +3,16 @@ on:
   push:
     branches: [integration/slickk-dp01]
   workflow_dispatch:
+    inputs:
+      rebuild:
+        type: boolean
+        default: false
+        description: Rebuild from pinned target-files instead of using the preserved image
 permissions:
   contents: read
-  actions: write
+  actions: read
 jobs:
-  recover-evidence:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 10
-    steps:
-      - name: Stop superseded unbounded attempt
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh api -X POST repos/${{ github.repository }}/actions/runs/41846746520/cancel || true
-      - uses: actions/download-artifact@v4
-        with:
-          name: official-cuttlefish-evidence
-          run-id: 41848785937
-          github-token: ${{ github.token }}
-          path: recovered
-      - name: Print real failure and hashes
-        run: |
-          cat recovered/boot-inputs.sha256 recovered/overlay.sha256
-          find recovered/host-logs -type f -exec sh -c 'echo "$1"; tail -100 "$1"' sh {} \;
-      - uses: actions/upload-artifact@v4
-        with:
-          name: slickk-dp01-diagnostics-small
-          path: |
-            recovered/**
-            !recovered/*.tar.gz
-          retention-days: 14
   boot-aosp:
-    if: ${{ false }}
     runs-on: ubuntu-24.04
     timeout-minutes: 55
     env:
@@ -74,12 +53,26 @@ jobs:
       - name: Test image customization contracts
         run: python3 -m unittest discover -s experiments/developer-preview -v
       - name: Build product image and AVB metadata
+        if: ${{ inputs.rebuild == true }}
         run: bash experiments/developer-preview/build.sh
-      - uses: actions/upload-artifact@v4
+      - uses: actions/download-artifact@v4
+        if: ${{ inputs.rebuild != true }}
         with:
           name: slickk-dp01-built-images
-          path: evidence/
-          retention-days: 14
+          run-id: 41848785937
+          github-token: ${{ github.token }}
+          path: evidence
+      - name: Restore exact previously built images
+        if: ${{ inputs.rebuild != true }}
+        run: bash experiments/developer-preview/restore.sh
+      - name: Permit crosvm sandbox namespaces with executable-scoped AppArmor profile
+        run: |
+          set -Eeuo pipefail
+          test "$(sysctl -n kernel.apparmor_restrict_unprivileged_userns)" = 1
+          printf '%s\n' 'abi <abi/4.0>,' 'include <tunables/global>' "\"$HOME/cf/bin/crosvm\" flags=(unconfined) {" '  userns,' '}' | sudo tee /etc/apparmor.d/slickk-crosvm
+          sudo apparmor_parser -r /etc/apparmor.d/slickk-crosvm
+          sudo aa-status > evidence/host-apparmor.txt
+          sysctl kernel.apparmor_restrict_unprivileged_userns >> evidence/host-apparmor.txt
       - name: Launch custom image and prove actual boot
         timeout-minutes: 12
         shell: bash
@@ -87,7 +80,7 @@ jobs:
           set -Eeuo pipefail
           sudo chmod 0666 /dev/kvm
           timeout -k 20 180 sg kvm -c "sg cvdnetwork -c 'HOME=$HOME/cf $HOME/cf/bin/launch_cvd \
-            -daemon -memory_mb=4096 -cpus=2 -gpu_mode=guest_swiftshader \
+            -enable_sandbox=true -daemon -memory_mb=4096 -cpus=2 -gpu_mode=guest_swiftshader \
             -report_anonymous_usage_stats=n'"
           timeout 180 adb wait-for-device
           timeout 600 bash -c 'until [ "$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d "\r")" = "1" ]; do sleep 5; done'
@@ -113,6 +106,8 @@ jobs:
             "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" "$GITHUB_SHA" > evidence/runner.txt
           df -h . >> evidence/runner.txt
           free -h >> evidence/runner.txt
+          sudo dmesg > evidence/host-kernel.txt
+          cp "$HOME/cf/cuttlefish/instances/cvd-1/cuttlefish_config.json" evidence/ || true
           find "$HOME/cf" -type f \( -name '*log' -o -name '*log.txt' \) -size -20M -print0 | while IFS= read -r -d '' f; do
             dest="evidence/host-logs/${f#"$HOME/cf/"}"
             mkdir -p "$(dirname "$dest")"
@@ -122,8 +117,10 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: official-cuttlefish-evidence
-          path: evidence/
+          name: slickk-dp01-boot-evidence
+          path: |
+            evidence/**
+            !evidence/*.tar.gz
           retention-days: 14
       - name: Stop virtual device
         if: always()
