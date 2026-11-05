@@ -55,6 +55,12 @@ jobs:
       - name: Build product image and AVB metadata
         if: ${{ inputs.rebuild == true }}
         run: bash experiments/developer-preview/build.sh
+      - uses: actions/upload-artifact@v4
+        if: ${{ inputs.rebuild == true }}
+        with:
+          name: slickk-dp01-built-images
+          path: evidence/
+          retention-days: 14
       - uses: actions/download-artifact@v4
         if: ${{ inputs.rebuild != true }}
         with:

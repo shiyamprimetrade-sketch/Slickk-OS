@@ -6,6 +6,7 @@ check_system() {
   test "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1
   test "$(adb shell getenforce | tr -d '\r')" = Enforcing
   test "$(adb shell getprop ro.boot.veritymode | tr -d '\r')" = enforcing
+  printf 'stage=%s sys.boot_completed=1 selinux=Enforcing verity=enforcing\n' "$1"
   adb shell getprop ro.boot.verifiedbootstate
   adb shell getprop ro.boot.vbmeta.device_state
   adb shell getprop ro.build.fingerprint
@@ -18,6 +19,9 @@ check_system() {
   test "$(cut -d' ' -f1 "evidence/apk-$1.sha256")" = "$(sha256sum evidence/SlickkHome-debug.apk | cut -d' ' -f1)"
 }
 check_system before
+# Dismiss the fresh virtual device's swipe-only keyguard; do not change lock policy.
+adb shell input keyevent KEYCODE_WAKEUP
+adb shell wm dismiss-keyguard
 adb shell cmd package set-home-activity online.slickk.os/.HomeActivity
 adb shell cmd role add-role-holder --user 0 android.app.role.HOME online.slickk.os
 adb shell am start -W -n online.slickk.os/.HomeActivity | tee evidence/home-start.txt
@@ -28,7 +32,7 @@ adb shell uiautomator dump /sdcard/window.xml
 adb pull /sdcard/window.xml evidence/window.xml
 read -r x y < <(python3 - <<'PY'
 import re, xml.etree.ElementTree as E
-nodes=[n for n in E.parse('evidence/window.xml').iter('node') if n.get('text')=='Settings' and n.get('clickable')=='true']
+nodes=[n for n in E.parse('evidence/window.xml').iter('node') if n.get('package')=='online.slickk.os' and n.get('text')=='Settings' and n.get('clickable')=='true']
 assert len(nodes)==1, 'Settings button not uniquely visible'
 a,b,c,d=map(int,re.findall(r'\d+',nodes[0].get('bounds')))
 print((a+c)//2,(b+d)//2)
@@ -37,7 +41,7 @@ PY
 adb shell input tap "$x" "$y"
 sleep 3
 adb shell dumpsys activity activities > evidence/settings-launch.txt
-grep -E 'mResumedActivity.*com.android.settings' evidence/settings-launch.txt
+grep -E '(mResumedActivity|topResumedActivity).*com.android.settings' evidence/settings-launch.txt
 adb shell input keyevent KEYCODE_HOME
 adb exec-out screencap -p > evidence/slickk-system-home.png
 adb reboot
@@ -45,6 +49,8 @@ timeout 180 adb wait-for-device
 timeout 300 bash -c 'until [ "$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d "\r")" = 1 ]; do sleep 5; done'
 sleep 10
 check_system after
+adb shell input keyevent KEYCODE_WAKEUP
+adb shell wm dismiss-keyguard
 adb shell cmd role get-role-holders --user 0 android.app.role.HOME | tr -d '\r' | tee evidence/home-role-after.txt
 grep -Fx online.slickk.os evidence/home-role-after.txt
 adb shell cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.HOME | tee evidence/home-resolve-after.txt
